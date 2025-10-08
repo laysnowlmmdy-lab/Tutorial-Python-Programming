@@ -1,0 +1,6185 @@
+{
+  "cells": [
+    {
+      "cell_type": "code",
+      "execution_count": 133,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-24T06:15:42.961011Z",
+          "start_time": "2022-03-24T06:15:42.924013Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "osV0f5F6oNF5",
+        "outputId": "435a3979-8a20-4f0b-b891-023ca291dc49"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "x86_64\n",
+            "13(GB)\n",
+            "Linux\n",
+            "#1 SMP PREEMPT_DYNAMIC Sat Sep  6 09:54:41 UTC 2025\n",
+            "/content\n",
+            "2025-10-06 14:27:36.109088\n",
+            "2025-10-06 13:37:49\n",
+            "2025-10-06 14:27:36.109088\n",
+            "2025-10-08 16:47:17.282531\n",
+            "다음 출력을 파일명으로 설정하고 제출하시오: 난_202402757_비즈니스혁신을위한데이터사이언스응용_1반_InputOutput\n"
+          ]
+        }
+      ],
+      "source": [
+        "# 반드시 이 cell을 실행하시오\n",
+        "# 실행하지 않을 시 직접 하지 않은 것으로 간주\n",
+        "# 마지막 줄 출력으로 파일명을 설정하고 제출 필수\n",
+        "import platform, psutil, os, datetime\n",
+        "print(platform.processor())\n",
+        "print(str(round(psutil.virtual_memory().total / (1024.0 **3)))+\"(GB)\")\n",
+        "print(platform.system())\n",
+        "print(platform.version())\n",
+        "print(os.getcwd())\n",
+        "print(datetime.datetime.fromtimestamp(os.path.getctime(os.getcwd())))\n",
+        "print(datetime.datetime.fromtimestamp(os.path.getmtime(os.getcwd())))\n",
+        "print(datetime.datetime.fromtimestamp(os.path.getatime(os.getcwd())))\n",
+        "print(datetime.datetime.now())\n",
+        "title = 'InputOutput'    # 고정값\n",
+        "name = '난'    # 본인 이름을 작성\n",
+        "studentid = '202402757'    # 본인 학번을 작성\n",
+        "course = '비즈니스혁신을위한데이터사이언스응용'    # '비즈니스데이터사이언스이해', '비즈니스혁신을위한데이터사이언스응용'\n",
+        "course_number = '1반'    #  학수번호 끝자리\n",
+        "                         # 비즈니스데이터사이언스의이해 (0010885001) => 1반\n",
+        "                         # 비즈니스데이터사이언스의이해 (0010885002) => 2반\n",
+        "                         # 비즈니스혁신을위한데이터사이언스응용 (1002667001) => 1반\n",
+        "print('다음 출력을 파일명으로 설정하고 제출하시오:', name + '_' + studentid + '_' + course + '_' + course_number + '_' + title)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "zJD6cybEoNF8"
+      },
+      "source": [
+        "# **프로그래밍 사고**\n",
+        "\n",
+        "[![Open in Colab](http://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/thekimk/Tutorial-Python-Programming/blob/main/Practice1-2_Basic_InputOutput_KK(Practice).ipynb)\n",
+        "\n",
+        "- **필요성:** 사람마다 사용 언어와 생각 방식이 다르듯 프로그래밍 언어의 처리방식도 사람과 **`유사한 부분`** 과 **`다른 부분`** 이 존재하며 이를 이해하는 것이 필수"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "LTa6j0hPoNF9"
+      },
+      "source": [
+        "## **유사한부분:** Y = f(X) + e\n",
+        "\n",
+        "- **\"세상의 모든 로직은 입력(X), 처리(f), 출력(Y), 그리고 검증(e) 프로세스로 최적화되어 표현된다\"**\n",
+        "\n",
+        "<center><img src='https://github.com/thekimk/Tutorial-Python-Programming/blob/main/Image/Basic/Programming_IndependentStructure.png?raw=1' width='600'></center>\n",
+        "\n",
+        "---\n",
+        "\n",
+        "<span style=\"color:blue\">**\"비즈니스 작동요소 = 조직 작동방식 = 사람 교류방식 = 컴퓨터 교류방식 =**</span><span style=\"color:red\">**데이터과학 작동방식\"**</span>\n",
+        "\n",
+        "**1) 사람 교류방식 vs 컴퓨터 교류방식:**\n",
+        "> <center><img src='https://github.com/thekimk/Tutorial-Python-Programming/blob/main/Image/Basic/Programming_ManVsComputer.png?raw=1' width='800'></center>\n",
+        "\n",
+        "**2) 실제 교류방식:** 반복적으로 피드백을 업데이트 하며 `관계를 업데이트`\n",
+        "> <center><img src='https://github.com/thekimk/Tutorial-Python-Programming/blob/main/Image/Basic/Programming_RealCommunication.png?raw=1' width='600'></center>\n",
+        "\n",
+        "**3) 데이터과학 작동방식: 입력(x)/처리(f)/출력(y)/검증(e)**\n",
+        "- **이상적:**\n",
+        "> <center><img src='https://github.com/thekimk/Tutorial-Python-Programming/blob/main/Image/Basic/Programming_BusinessProcess2.png?raw=1' width='900'></center>\n",
+        "\n",
+        "- **현실적:** 끊없는(?) 학습과 예측의 `무한반복` 기반, 끝인 줄 알았는데 반쪽짜리\n",
+        "> <center><img src='https://github.com/thekimk/Tutorial-Python-Programming/blob/main/Image/Basic/DataSplit_Concept1.png?raw=1' width='900'></center>\n",
+        "> <center><img src='https://github.com/thekimk/Tutorial-Python-Programming/blob/main/Image/Basic/DataSplit_Concept2.png?raw=1' width='900'></center>\n",
+        "> <center><img src='https://github.com/thekimk/Tutorial-Python-Programming/blob/main/Image/Basic/Analysis_Process.png?raw=1' width='900'></center>\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "YdDORSEJoNF-"
+      },
+      "source": [
+        "## **다른부분:** 같다 vs 할당한다\n",
+        "\n",
+        "- **사람의 사고:** \"나\"와 \"KK\"는 같다\n",
+        "- **프로그래밍 사고:** \"나\"는 \"KK\"라고 할당한다(반영한다)\n",
+        "\n",
+        "```python\n",
+        "I = \"KK\"\n",
+        "print(I)\n",
+        "KK\n",
+        "```\n",
+        "\n",
+        "- **사람의 사고:** \"나\"와 \"KK\"는 같고, \"너\"는 \"Korea\"와 같고, \"나\"는 \"너\"와 같다. Why Korea?\n",
+        "- **프로그래밍 사고:** \"나\"는 \"KK\"로 할당하고, \"너\"는 \"Korea\"로 할당하고, \"나\"는 \"너\"로 할당했다.\n",
+        "\n",
+        "```python\n",
+        "I = \"KK\"\n",
+        "You = \"Korea\"\n",
+        "I = You\n",
+        "print(I)\n",
+        "Korea\n",
+        "```"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 10,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-24T06:16:27.723114Z",
+          "start_time": "2022-03-24T06:16:27.717116Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "BAbr2UD7oNF-",
+        "outputId": "b2ad739f-38ea-4d90-c490-2ecee37a31e6"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "KK\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Test\n",
+        "I = 'KK'\n",
+        "print(I)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 15,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.645166Z",
+          "start_time": "2022-03-22T17:31:33.631132Z"
+        },
+        "id": "4zugPYBRoNF-"
+      },
+      "outputs": [],
+      "source": [
+        "# Test\n",
+        "I = 'KK'\n",
+        "You = 'K'"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 15,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.660132Z",
+          "start_time": "2022-03-22T17:31:33.646162Z"
+        },
+        "id": "AX8gTTNXoNF-"
+      },
+      "outputs": [],
+      "source": [
+        "print(I YOU)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "YgcoRveooNF_"
+      },
+      "source": [
+        "# **파이썬이 이해하는 데이터 형태**\n",
+        "\n",
+        "- **목적:** 데이터분석과 프로그래밍 과정에서 파이썬이 이해할 수 있는 데이터의 형태로 입력하고 출력됨\n",
+        "> - Y = f(X)에서 입력(X)과 그리고 출력(Y)의 형태를 이해한다\n",
+        "\n",
+        "<center><img src='https://github.com/thekimk/Tutorial-Python-Programming/blob/main/Image/Basic/Basic_DataType.PNG?raw=1' width='1000'></center>\n",
+        "\n",
+        "- **데이터 값 핸들링:** 인덱스, 인덱싱, 슬라이싱\n",
+        "\n",
+        "> - **인덱스(Index):** 데이터 값의 순서를 의미하고 Python에선 1이 아닌 0부터 순서 시작(영어권 문화)\n",
+        "> <center><img src='https://github.com/thekimk/Tutorial-Python-Programming/blob/main/Image/Basic/Basic_Index.png?raw=1' width='400'></center>\n",
+        "\n",
+        "> - **인덱싱(Indexing):** 인덱스를 사용하여 데이터의 값을 불러오는 것\n",
+        ">\n",
+        "> ```python\n",
+        "> # 데이터형[인덱스]\n",
+        "'Ready'[3]    # d\n",
+        "[1,2,3][2]    # 3\n",
+        "A = 'My Name'\n",
+        "A[3]    # N\n",
+        "\n",
+        "> - **슬라이싱(Slicing):** 특정 인덱스가 아니라 일정 인덱스 범위의 값을 불러오는 것\n",
+        "> <center><img src='https://github.com/thekimk/Tutorial-Python-Programming/blob/main/Image/Basic/Basic_Slicing.png?raw=1' width='400'></center>\n",
+        ">\n",
+        "> ```python\n",
+        "A = [2,4,6,8,10,12,14]\n",
+        "A[2:5]\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "weX7e5xcoNF_"
+      },
+      "source": [
+        "## **숫자형(Numbers):** 숫자의 특성을 갖는 것"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 17,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.675130Z",
+          "start_time": "2022-03-22T17:31:33.662133Z"
+        },
+        "id": "EWn0uWKEoNF_"
+      },
+      "outputs": [],
+      "source": [
+        "# 10이라는 입력을 A라는 변수에 그대로 출력\n",
+        "# print 함수는 값을 출력하는 기능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 18,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.690131Z",
+          "start_time": "2022-03-22T17:31:33.676132Z"
+        },
+        "id": "Zu-2cQSDoNF_"
+      },
+      "outputs": [],
+      "source": [
+        "# 기본적으로 마지막줄은 자동 출력기능이라서 print를 사용하지 않아도 됨\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 19,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.705130Z",
+          "start_time": "2022-03-22T17:31:33.691162Z"
+        },
+        "id": "akLAz1OhoNGA"
+      },
+      "outputs": [],
+      "source": [
+        "# 마지막줄 이외의 줄은 print, display 함수를 쓰지 않으면 자동 출력되지 않음\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 131,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.720160Z",
+          "start_time": "2022-03-22T17:31:33.706163Z"
+        },
+        "id": "PuX-5MauoNGA"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 131,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.735130Z",
+          "start_time": "2022-03-22T17:31:33.721131Z"
+        },
+        "id": "dfEZs7QIoNGA"
+      },
+      "outputs": [],
+      "source": [
+        "# A+10 입력받아 type함수로 형태를 처리하고 output에 출력\n",
+        "# 자료형을 확인할 때는 type 함수를 이용함\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "qTlFjrbss1vP"
+      },
+      "execution_count": 130,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 130,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.750161Z",
+          "start_time": "2022-03-22T17:31:33.736133Z"
+        },
+        "id": "DEs94JP8oNGA"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 24,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.765160Z",
+          "start_time": "2022-03-22T17:31:33.752130Z"
+        },
+        "id": "5nZuVPv_oNGA"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 25,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.780165Z",
+          "start_time": "2022-03-22T17:31:33.766131Z"
+        },
+        "id": "o6dyJdC4oNGA"
+      },
+      "outputs": [],
+      "source": [
+        "# print 함수는 임의의 문자화 함께 출력 가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "id": "GSWY41wosfh2"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 26,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.795131Z",
+          "start_time": "2022-03-22T17:31:33.781133Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "cJ-3FadToNGA",
+        "outputId": "ecd48ef6-0a29-42c5-9efa-a36acbc008ba"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "float"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 26
+        }
+      ],
+      "source": [
+        "B = 3.14\n",
+        "type(B)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 26,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.810130Z",
+          "start_time": "2022-03-22T17:31:33.796132Z"
+        },
+        "id": "L51r_zngoNGA"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 27,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.825160Z",
+          "start_time": "2022-03-22T17:31:33.811163Z"
+        },
+        "id": "4Bv__jbeoNGA"
+      },
+      "outputs": [],
+      "source": [
+        "# 계산기처럼 쉽게 연산도 가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 28,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.840154Z",
+          "start_time": "2022-03-22T17:31:33.827131Z"
+        },
+        "id": "doDJYQj7oNGA"
+      },
+      "outputs": [],
+      "source": [
+        "# int와 float가 더해지면 가장 영역이 넓은 float 형태로 저장\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "XN9r4x6poNGA"
+      },
+      "source": [
+        "## **불리언(Boolean):** 참과 거짓으로 표현하는 것"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 29,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.855130Z",
+          "start_time": "2022-03-22T17:31:33.841132Z"
+        },
+        "id": "IhZ4PnqYoNGB"
+      },
+      "outputs": [],
+      "source": [
+        "# 0이 아닌 숫자는 True\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 30,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.870131Z",
+          "start_time": "2022-03-22T17:31:33.856163Z"
+        },
+        "id": "Ni_hT85SoNGB"
+      },
+      "outputs": [],
+      "source": [
+        "# 비어있는 문자는 False\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 30,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.885130Z",
+          "start_time": "2022-03-22T17:31:33.871130Z"
+        },
+        "id": "dTKy7v2voNGB"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 30,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.900162Z",
+          "start_time": "2022-03-22T17:31:33.887132Z"
+        },
+        "id": "EqGagFbYoNGB"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 31,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.915130Z",
+          "start_time": "2022-03-22T17:31:33.901134Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "4P0L9h_xoNGB",
+        "outputId": "5a7fd53c-ba9b-4268-cb1f-e8a83d931022"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "False"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 31
+        }
+      ],
+      "source": [
+        "bool(0)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 32,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.945129Z",
+          "start_time": "2022-03-22T17:31:33.929133Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ZhNw1zI0oNGB",
+        "outputId": "e4b18c91-25a7-4613-8cb3-e25a12d18dd9"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "True"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 32
+        }
+      ],
+      "source": [
+        "bool(1)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 32,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.960132Z",
+          "start_time": "2022-03-22T17:31:33.946131Z"
+        },
+        "id": "TyWNNnOUoNGB"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 33,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.975131Z",
+          "start_time": "2022-03-22T17:31:33.961131Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "kWo5dkSAoNGB",
+        "outputId": "2aadc841-cc0c-4c3c-82b2-8ce86f347d1c"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "False"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 33
+        }
+      ],
+      "source": [
+        "bool(False)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 33,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:33.990131Z",
+          "start_time": "2022-03-22T17:31:33.976132Z"
+        },
+        "id": "gyfjb34FoNGB"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 34,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.005131Z",
+          "start_time": "2022-03-22T17:31:33.991130Z"
+        },
+        "id": "YnkS3G5NoNGB"
+      },
+      "outputs": [],
+      "source": [
+        "# 파이썬은 사람의 언어중 영어의 어순을 그대로 사용하는 특징\n",
+        "# I가 You인지 의문문을 쓰면 True/False 반환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 35,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.020131Z",
+          "start_time": "2022-03-22T17:31:34.006131Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "rWTT0TcyoNGB",
+        "outputId": "e887f502-e447-4a7a-c7aa-372fc3258fce"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "True"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 35
+        }
+      ],
+      "source": [
+        "I = You\n",
+        "I is You"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "ycB3lqjzoNGB"
+      },
+      "source": [
+        "## **문자열(Strings):** 따옴표 안에 입력된 것\n",
+        "\n",
+        "- 큰 따옴표(\" \")나 작은 따옴표 (' ')로 감싸진 부분을 파이썬은 문자열로 인식\n",
+        "```python\n",
+        "'hello!'\n",
+        "'3.14'\n",
+        "\"3.14\"\n",
+        "```\n",
+        "\n",
+        "- 따옴표로 감싸진 문자열 내에서 **`따옴표`** 자체를 문자열로 반영할때는 다른 종류의 따옴표 사용\n",
+        "```python\n",
+        "'오늘 수업은 \"여기까지\" 하겠습니다!'    # 가능\n",
+        "\"오늘 수업은 '여기까지' 하겠습니다!\"    # 가능\n",
+        "\"오늘 수업은 \"여기까지\" 하겠습니다!\"    # 불가능\n",
+        "'오늘 수업은 '여기까지' 하겠습니다!'    # 불가능\n",
+        "```\n",
+        "\n",
+        "- 여러줄의 문자열을 반영할때는 **`따옴표 3개`** 로 감싸서 사용\n",
+        "```python\n",
+        "'오늘 수업은\n",
+        "\"여기까지\" 하겠습니다!'    # 불가능\n",
+        "'''오늘 수업은\n",
+        "\"여기까지\" 하겠습니다!'''    # 가능\n",
+        "\"\"\"오늘 수업은\n",
+        "'여기까지' 하겠습니다!\"\"\"    # 가능\n",
+        "```\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 36,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.035130Z",
+          "start_time": "2022-03-22T17:31:34.021130Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "mlj7tfQcoNGB",
+        "outputId": "d5e2b0e5-b6e5-4b8c-8e65-7c2411206d0d"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "str"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 36
+        }
+      ],
+      "source": [
+        "I = 'KK'\n",
+        "type(I)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 38,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.050129Z",
+          "start_time": "2022-03-22T17:31:34.039131Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 36
+        },
+        "id": "-99IAY5OoNGB",
+        "outputId": "4224c02a-4fff-4058-ec27-ce5c6421ef14"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "'My name is KK'"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            }
+          },
+          "metadata": {},
+          "execution_count": 38
+        }
+      ],
+      "source": [
+        "Intro = 'My name is KK'\n",
+        "Intro"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 39,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.065130Z",
+          "start_time": "2022-03-22T17:31:34.051134Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "CeslNUy8oNGB",
+        "outputId": "2a662915-7f7b-44cf-a9d9-c8a43a2a01e8"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "str"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 39
+        }
+      ],
+      "source": [
+        "type(Intro)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 40,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.080129Z",
+          "start_time": "2022-03-22T17:31:34.066132Z"
+        },
+        "id": "RvRKN0qpoNGB"
+      },
+      "outputs": [],
+      "source": [
+        "# 다른 프로그래밍 언어와 달리 숫자가 아닌 문자로 숫자 연산 적용 가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 41,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.095131Z",
+          "start_time": "2022-03-22T17:31:34.081132Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "GN5iqooLoNGB",
+        "outputId": "d9437a51-dc53-4a28-e6b6-7d68b4863c16"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "str"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 41
+        }
+      ],
+      "source": [
+        "Intro = 'My name is KK & 1.0'\n",
+        "type(Intro)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 43,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.110130Z",
+          "start_time": "2022-03-22T17:31:34.096131Z"
+        },
+        "id": "jHyKPnz1oNGF"
+      },
+      "outputs": [],
+      "source": [
+        "# 문자열의 길이 또는 갯수\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 44,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.125132Z",
+          "start_time": "2022-03-22T17:31:34.111131Z"
+        },
+        "id": "gZG0DRKxoNGF"
+      },
+      "outputs": [],
+      "source": [
+        "# 문자열의 원소를 선택할 때는 대괄호안에 순서를 나타내는 인덱스를 입력\n",
+        "# 파이썬의 순서는 \"0\"부터 시작함\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 45,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.140161Z",
+          "start_time": "2022-03-22T17:31:34.126171Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 36
+        },
+        "id": "gfQqQL6uoNGF",
+        "outputId": "e7d40475-ed14-4d20-be20-0ee719fadfc0"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "'y'"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            }
+          },
+          "metadata": {},
+          "execution_count": 45
+        }
+      ],
+      "source": [
+        "Intro[1]"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 45,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.155162Z",
+          "start_time": "2022-03-22T17:31:34.141162Z"
+        },
+        "id": "evA85re1oNGF"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 46,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.170163Z",
+          "start_time": "2022-03-22T17:31:34.156163Z"
+        },
+        "id": "km65iNncoNGF"
+      },
+      "outputs": [],
+      "source": [
+        "# 길이를 벗어난 인덱스를 입력하면 오류\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 47,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.185130Z",
+          "start_time": "2022-03-22T17:31:34.171132Z"
+        },
+        "id": "NNURJJjhoNGF"
+      },
+      "outputs": [],
+      "source": [
+        "# 뒤에서부터 값을 추출가능\n",
+        "# 뒤에서의 추출순서는 \"-1\"부터 시작함\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 48,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.200160Z",
+          "start_time": "2022-03-22T17:31:34.186177Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 36
+        },
+        "id": "Aevs2UxeoNGF",
+        "outputId": "231159ef-5c9e-4885-a3cf-8af986d92a81"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "'.'"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            }
+          },
+          "metadata": {},
+          "execution_count": 48
+        }
+      ],
+      "source": [
+        "Intro[-2]"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 49,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.215160Z",
+          "start_time": "2022-03-22T17:31:34.201131Z"
+        },
+        "id": "a0J8NoSAoNGF"
+      },
+      "outputs": [],
+      "source": [
+        "# 여러개의 문자열을 선택할 때는 범위로 입력하되 [시작인텍스 이상:끝인덱스 미만] 형식\n",
+        "# 끝인덱스는 포함되지 않음\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.230132Z",
+          "start_time": "2022-03-22T17:31:34.217131Z"
+        },
+        "id": "92f9JwuOoNGF",
+        "outputId": "29df9d63-6bc5-4bc9-e173-3a877011c796"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'& 1.'"
+            ]
+          },
+          "execution_count": 40,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "Intro[-5:-1]"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.245161Z",
+          "start_time": "2022-03-22T17:31:34.231170Z"
+        },
+        "id": "DtKanFqFoNGF"
+      },
+      "outputs": [],
+      "source": [
+        "# 시작인텍스와 끝인텍스를 생략하면 자동으로 시작이나 끝까지 임을 인식함"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.260135Z",
+          "start_time": "2022-03-22T17:31:34.246161Z"
+        },
+        "id": "x0WlTXdYoNGF",
+        "outputId": "3cdbd6ef-a8a6-490b-be79-63a14ce802a4"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'My n'"
+            ]
+          },
+          "execution_count": 42,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.275160Z",
+          "start_time": "2022-03-22T17:31:34.261133Z"
+        },
+        "id": "wg3HU_6noNGF",
+        "outputId": "8ddb9fd3-9b3d-45ff-9714-78d44a4fe87f"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'& 1.0'"
+            ]
+          },
+          "execution_count": 43,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.290162Z",
+          "start_time": "2022-03-22T17:31:34.276161Z"
+        },
+        "id": "1O8MS_6OoNGG",
+        "outputId": "c4f803bf-5287-4574-de78-c09e8f490065"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'My name is KK & 1.0 Haha'"
+            ]
+          },
+          "execution_count": 44,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 더하기로 쉽게 문자열을 붙일 수 있음\n",
+        "# 다른 프로그래밍 언어에선 숫자가 아닌 문자에 더하기 연산 불가\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.305166Z",
+          "start_time": "2022-03-22T17:31:34.291162Z"
+        },
+        "id": "8cJaegqToNGG",
+        "outputId": "a16565f2-8ebb-4a31-a3c1-90fe4495771e"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'110 is your age'"
+            ]
+          },
+          "execution_count": 45,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 숫자를 문자로 바꾸기 위해서 str 함수를 사용\n",
+        "# %가 위치한 곳에 값을 입력받아 출력\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.320130Z",
+          "start_time": "2022-03-22T17:31:34.306132Z"
+        },
+        "id": "JZsm9eCaoNGG",
+        "outputId": "fed29b3f-03a4-4a4d-e4c4-105f6ff4e3a8"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'110 is your age'"
+            ]
+          },
+          "execution_count": 46,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.335163Z",
+          "start_time": "2022-03-22T17:31:34.321166Z"
+        },
+        "id": "NzkKqGomoNGG",
+        "outputId": "b351c0c1-bbeb-4222-93aa-88caa1fc13ea"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'I ate 10 apples. So I was sick for three days.'"
+            ]
+          },
+          "execution_count": 47,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# % 호로 여러개의 문자열 입력받아 출력 가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.350160Z",
+          "start_time": "2022-03-22T17:31:34.336129Z"
+        },
+        "id": "9VZ1pbyBoNGG",
+        "outputId": "ac8cd7de-2679-4760-a501-9f24c970a2cb"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'I ate 10 apples. So I was sick for three days.'"
+            ]
+          },
+          "execution_count": 48,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.365130Z",
+          "start_time": "2022-03-22T17:31:34.351130Z"
+        },
+        "id": "A-AauSTZoNGG",
+        "outputId": "d3ffc1da-30ab-44bd-e383-22bd41a91ee2"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'I ate {number} apples. So I was sick for {day} days.'"
+            ]
+          },
+          "execution_count": 49,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "number = 10\n",
+        "day = 'three'\n",
+        "'I ate {number} apples. So I was sick for {day} days.'"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.380163Z",
+          "start_time": "2022-03-22T17:31:34.366131Z"
+        },
+        "id": "PDCsC3XXoNGG",
+        "outputId": "26b8e8ef-07e4-42f8-e474-2df52c46bc32"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'I ate 10 apples. So I was sick for three days.'"
+            ]
+          },
+          "execution_count": 50,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.395164Z",
+          "start_time": "2022-03-22T17:31:34.381131Z"
+        },
+        "id": "2BLYisX4oNGG",
+        "outputId": "651d9360-7e9b-48b9-a005-8109351f43fc"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'M,y, ,n,a,m,e, ,i,s, ,K,K, ,&, ,1,.,0'"
+            ]
+          },
+          "execution_count": 51,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# join 함수로 반복적으로 값을 사이에 붙일 수 있음\n",
+        "# 접착문자열.join(리스트)\n",
+        "# 리스트 값들은 모두 문자열에서만 가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.410161Z",
+          "start_time": "2022-03-22T17:31:34.396130Z"
+        },
+        "id": "FNtj3VrToNGG",
+        "outputId": "a606037e-6810-4c0f-f29e-e5f392dc0d75"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'M y   n a m e   i s   K K   &   1 . 0'"
+            ]
+          },
+          "execution_count": 52,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.425162Z",
+          "start_time": "2022-03-22T17:31:34.411130Z"
+        },
+        "id": "a9-t_U44oNGG",
+        "outputId": "c079bcf1-04a2-44c3-f214-36710bb36030"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'0.1 & KK si eman yM'"
+            ]
+          },
+          "execution_count": 53,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# reversed 함수로 쉽게 값을 뒤집을 수 있음\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.440129Z",
+          "start_time": "2022-03-22T17:31:34.427132Z"
+        },
+        "id": "hi-EjPjeoNGG",
+        "outputId": "dde1b92c-b104-4bcd-cf75-b3d1f99658e2"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'My name is KK & 1.0'"
+            ]
+          },
+          "execution_count": 54,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# Intro[시작:끝:간격]\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.455130Z",
+          "start_time": "2022-03-22T17:31:34.441133Z"
+        },
+        "id": "O0Ji0UTzoNGG",
+        "outputId": "34be4068-b3a1-4bef-c87d-40f55e714604"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'My name is KK & 1.0'"
+            ]
+          },
+          "execution_count": 55,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "Intro[::1]"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.470131Z",
+          "start_time": "2022-03-22T17:31:34.456131Z"
+        },
+        "id": "tCfC0DgeoNGG",
+        "outputId": "140db474-3613-49b4-ce5b-c67dcc53021b"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'M aei K&10'"
+            ]
+          },
+          "execution_count": 56,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.485130Z",
+          "start_time": "2022-03-22T17:31:34.473134Z"
+        },
+        "id": "TNJLgVpuoNGG",
+        "outputId": "2c7f8d24-cad5-4096-f592-5a9fbd9bf700"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'0.1 & KK si eman yM'"
+            ]
+          },
+          "execution_count": 57,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 간격도 음수를 사용해 뒤에서 앞으로 추출 가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.501132Z",
+          "start_time": "2022-03-22T17:31:34.490132Z"
+        },
+        "id": "HIx_xVKSoNGG",
+        "outputId": "b282d1e9-a975-4b0d-d720-9f74331838e7"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "['My', 'name', 'is', 'KK', '&', '1.0']"
+            ]
+          },
+          "execution_count": 58,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 문자열.split(기준) 함수로 문자열 나누기\n",
+        "# '기준'은 쪼개고 나서 사라짐\n",
+        "# '기준'이 없으면 자동으로 '공백'을 기준으로 사용\n",
+        "# 문자열이 쪼개진 후 결과는 리스트 형태로 반환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.516128Z",
+          "start_time": "2022-03-22T17:31:34.502133Z"
+        },
+        "id": "wzHkucauoNGG",
+        "outputId": "e3e3af73-04c8-4d1d-a330-1a654ef1364b"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'My'"
+            ]
+          },
+          "execution_count": 59,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.531128Z",
+          "start_time": "2022-03-22T17:31:34.517130Z"
+        },
+        "id": "220DjPcuoNGG",
+        "outputId": "a8619649-8dc6-4417-fe86-7d8b42105a85"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "2"
+            ]
+          },
+          "execution_count": 60,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# count 함수로 문자 개수 세기\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.546131Z",
+          "start_time": "2022-03-22T17:31:34.532131Z"
+        },
+        "id": "rX5UYTGPoNGG",
+        "outputId": "a1340acf-5484-4133-f4ce-d65b53ecff10"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "16"
+            ]
+          },
+          "execution_count": 61,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# find 함수로 위치 알 수 있음\n",
+        "# Intro.find(1)\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.561133Z",
+          "start_time": "2022-03-22T17:31:34.547131Z"
+        },
+        "id": "NMLWM5m3oNGH",
+        "outputId": "a49bfed2-3fc5-414e-9537-42735870668c"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "-1"
+            ]
+          },
+          "execution_count": 62,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.576130Z",
+          "start_time": "2022-03-22T17:31:34.562132Z"
+        },
+        "id": "v6wluFqQoNGH",
+        "outputId": "ab2bc208-676b-40f9-ba66-27f772a4daab"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'MY NAME IS KK & 1.0'"
+            ]
+          },
+          "execution_count": 63,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# Upper / Lower 함수로 대소문자 변경 가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.591131Z",
+          "start_time": "2022-03-22T17:31:34.578131Z"
+        },
+        "id": "DjUkA9TwoNGH",
+        "outputId": "7fa9c011-dfc4-454c-ec91-3d3c924ca788"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'my name is kk & 1.0'"
+            ]
+          },
+          "execution_count": 64,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.606131Z",
+          "start_time": "2022-03-22T17:31:34.594135Z"
+        },
+        "id": "WuxFqflPoNGH",
+        "outputId": "5d369422-a302-4ce7-f621-48b84710617a"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'Your name is KK & 1.0'"
+            ]
+          },
+          "execution_count": 65,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# replace 함수로 문자열 바꾸기\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "2VKLtmy6oNGH"
+      },
+      "source": [
+        "## **리스트(Lists):** 여러개의 값을 하나로 모아서 다룰 때 사용"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.622131Z",
+          "start_time": "2022-03-22T17:31:34.610133Z"
+        },
+        "id": "U6Pwns51oNGH",
+        "outputId": "a304da0b-ca81-43b6-9db5-34ec5388b465"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[1, 2, 3, 4, 5]"
+            ]
+          },
+          "execution_count": 66,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 대괄호로 묶인 데이터를 리스트로 인식\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.638130Z",
+          "start_time": "2022-03-22T17:31:34.624131Z"
+        },
+        "id": "mSx7uiP2oNGH",
+        "outputId": "d5658ef4-ad83-4ac5-a6b2-9cdc0179c590"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "list"
+            ]
+          },
+          "execution_count": 67,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "type(Collection)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.653132Z",
+          "start_time": "2022-03-22T17:31:34.639133Z"
+        },
+        "id": "xIeW3VCHoNGH",
+        "outputId": "62caa9f5-f16e-4112-a69a-e1104240bd4c"
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "[10]\n"
+          ]
+        },
+        {
+          "data": {
+            "text/plain": [
+              "list"
+            ]
+          },
+          "execution_count": 68,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.668130Z",
+          "start_time": "2022-03-22T17:31:34.655132Z"
+        },
+        "id": "hj2nc_yYoNGH",
+        "outputId": "dd19493a-26a0-4abe-c419-8bee8ac11391"
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "[]\n"
+          ]
+        },
+        {
+          "data": {
+            "text/plain": [
+              "list"
+            ]
+          },
+          "execution_count": 69,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 빈 리스트 생성\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.683130Z",
+          "start_time": "2022-03-22T17:31:34.669131Z"
+        },
+        "id": "d9S8NoZroNGH",
+        "outputId": "1687d375-e72c-460a-8e11-aa388a4ae79f"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [1, 2, 3, 4, 5]]"
+            ]
+          },
+          "execution_count": 70,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 리스트끼리 묶어서 차원을 늘릴 수도 있음\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.698129Z",
+          "start_time": "2022-03-22T17:31:34.685132Z"
+        },
+        "id": "7BcOp3i0oNGH",
+        "outputId": "e456f803-0c87-459d-ca20-db23a61c2536"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "list"
+            ]
+          },
+          "execution_count": 71,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.713130Z",
+          "start_time": "2022-03-22T17:31:34.700132Z"
+        },
+        "id": "-iByixBpoNGH",
+        "outputId": "499b1ca6-6bbf-4d82-e7fe-c9d3ea2e94a9"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[10]"
+            ]
+          },
+          "execution_count": 72,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "Final[0]    # 0번쨰 row"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.728134Z",
+          "start_time": "2022-03-22T17:31:34.714131Z"
+        },
+        "id": "EDaAHeKfoNGH",
+        "outputId": "2544f54e-e9cf-4b6a-d89a-f87cb89205f5"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[]"
+            ]
+          },
+          "execution_count": 73,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.743130Z",
+          "start_time": "2022-03-22T17:31:34.730133Z"
+        },
+        "id": "NpmCZyqWoNGH",
+        "outputId": "3f5599e1-3e3e-43d6-e667-cca44f104c5e"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[1, 2, 3, 4, 5]"
+            ]
+          },
+          "execution_count": 74,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.758131Z",
+          "start_time": "2022-03-22T17:31:34.745132Z"
+        },
+        "id": "4NeN6KjKoNGH",
+        "outputId": "a038c2dc-81e1-4eea-fbad-ab1652fe0ca2"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "2"
+            ]
+          },
+          "execution_count": 75,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "Final[2][1]    # 2번째 row에서 1번째 값"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.773131Z",
+          "start_time": "2022-03-22T17:31:34.761133Z"
+        },
+        "id": "r0rVU3b-oNGH",
+        "outputId": "87e8d9e2-2dbe-4450-df59-fe9f9c60dfc4"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "5"
+            ]
+          },
+          "execution_count": 76,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.788131Z",
+          "start_time": "2022-03-22T17:31:34.775132Z"
+        },
+        "id": "YMU7RmiqoNGH",
+        "outputId": "3279c099-1546-48b1-8e1d-38cddc61a66c"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10]]"
+            ]
+          },
+          "execution_count": 77,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.803133Z",
+          "start_time": "2022-03-22T17:31:34.790133Z"
+        },
+        "id": "utrby2PFoNGH",
+        "outputId": "8414b28d-a091-4856-a2a2-4008c6223c61"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [1, 2, 3, 4, 5]]"
+            ]
+          },
+          "execution_count": 78,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "Final[:3]"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.818130Z",
+          "start_time": "2022-03-22T17:31:34.805131Z"
+        },
+        "id": "i3wKqpVSoNGI",
+        "outputId": "94a947dc-3134-44de-addc-47073b8b02cf"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [1, 2, 3, 4, 5]]"
+            ]
+          },
+          "execution_count": 79,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.833130Z",
+          "start_time": "2022-03-22T17:31:34.819130Z"
+        },
+        "id": "xrVZO-tmoNGI",
+        "outputId": "6a9519f5-e78e-4874-ba6c-da37e8ba8d81"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[1, 2, 3]"
+            ]
+          },
+          "execution_count": 80,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.848130Z",
+          "start_time": "2022-03-22T17:31:34.834131Z"
+        },
+        "id": "bOqf29I_oNGI",
+        "outputId": "2d556086-ade7-4f9c-d67e-26167026c7c7"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[1, 2, 3, 4, 5]"
+            ]
+          },
+          "execution_count": 81,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "Final[2]"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.878133Z",
+          "start_time": "2022-03-22T17:31:34.858131Z"
+        },
+        "id": "OXWpYz7OoNGI",
+        "outputId": "f1674178-1447-4f6e-b91b-3c758be96df2"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[1, 2, 3, 4, 5, 100]"
+            ]
+          },
+          "execution_count": 82,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# append 함수로 값을 추가 가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.893132Z",
+          "start_time": "2022-03-22T17:31:34.881138Z"
+        },
+        "id": "KyaDQEM8oNGI",
+        "outputId": "971cfb37-d9d3-4029-8eb3-b3062d419a5a"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [1, 2, 3, 4, 5, 100]]"
+            ]
+          },
+          "execution_count": 83,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "Final"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.908132Z",
+          "start_time": "2022-03-22T17:31:34.896134Z"
+        },
+        "id": "LfEffLB6oNGI",
+        "outputId": "2b8d157a-8338-4905-9c50-0c96e1e5bf16"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[1, 2, 3, 4, 5, 100, 1, 2, 3, 4, 5, 100]"
+            ]
+          },
+          "execution_count": 84,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 더하기와 반복으로 쉽게 확장가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.923132Z",
+          "start_time": "2022-03-22T17:31:34.910133Z"
+        },
+        "id": "_hRIkZSroNGI",
+        "outputId": "a35ce90b-67d3-445b-9c35-8029ee0d721a"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[1, 2, 3, 4, 5, 100, 1, 2, 3, 4, 5, 100, 1, 2, 3, 4, 5, 100]"
+            ]
+          },
+          "execution_count": 85,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 곱하기로 쉽게 확장가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.939131Z",
+          "start_time": "2022-03-22T17:31:34.924132Z"
+        },
+        "id": "8yrCcLkLoNGI",
+        "outputId": "45759c6e-1de1-47e4-805e-d92685035800"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "3"
+            ]
+          },
+          "execution_count": 86,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 길이를 구할때는 len 함수사용\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.954130Z",
+          "start_time": "2022-03-22T17:31:34.940132Z"
+        },
+        "id": "90dZg4KVoNGI",
+        "outputId": "27a308eb-c21c-4307-d5b5-57641b4d1298"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "6"
+            ]
+          },
+          "execution_count": 87,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.969131Z",
+          "start_time": "2022-03-22T17:31:34.955131Z"
+        },
+        "id": "nRQHvHvFoNGI",
+        "outputId": "f0d79f43-5b38-49fd-92d1-b8c31ef3d7d6"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "'1 First'"
+            ]
+          },
+          "execution_count": 88,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 숫자를 문자와 붙이려면 형태를 문자로 맞춰야 함\n",
+        "# Final[2][0] + ' First'\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.984128Z",
+          "start_time": "2022-03-22T17:31:34.970132Z"
+        },
+        "id": "jgriBihvoNGI",
+        "outputId": "71fb6db3-b786-4b3e-fb5b-8d16a2a9fe1c"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[1, 2, 3, 4, 5, 100]"
+            ]
+          },
+          "execution_count": 89,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:34.999130Z",
+          "start_time": "2022-03-22T17:31:34.985130Z"
+        },
+        "id": "b1ERAVvtoNGI",
+        "outputId": "af981fc1-89ca-4bda-f06b-edcb95c82a33"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [100, 2, 3, 4, 5, 100]]"
+            ]
+          },
+          "execution_count": 90,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 값의 수정은 대입으로 가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.014132Z",
+          "start_time": "2022-03-22T17:31:35.000130Z"
+        },
+        "id": "c0NSjDk4oNGI",
+        "outputId": "76d60360-a9b6-421b-97c7-c9195fc559f3"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [100, 2, 3, 4, 5]]"
+            ]
+          },
+          "execution_count": 91,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 값의 삭제는 del 함수 사용\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.029134Z",
+          "start_time": "2022-03-22T17:31:35.016132Z"
+        },
+        "id": "b2f0sD6VoNGI"
+      },
+      "outputs": [],
+      "source": [
+        "# 값의 추가\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.044130Z",
+          "start_time": "2022-03-22T17:31:35.031135Z"
+        },
+        "id": "dmy2u2VioNGI",
+        "outputId": "f7501fe4-8ec5-4fb7-f5cf-2c5af52880e3"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [100, 2, 3, 4, 5], 111]"
+            ]
+          },
+          "execution_count": 93,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "Final"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.059130Z",
+          "start_time": "2022-03-22T17:31:35.045132Z"
+        },
+        "id": "a1IF4y5QoNGI",
+        "outputId": "b02aac13-7dd7-4319-c263-0ebde9f17036"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [2, 3, 4, 5, 100], 111]"
+            ]
+          },
+          "execution_count": 94,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 정렬하기\n",
+        "# 같은 유형의 값으로만 들어있어야 비교가 가능하고 정렬이 됨\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.074131Z",
+          "start_time": "2022-03-22T17:31:35.060133Z"
+        },
+        "id": "zB4RmSU0oNGI",
+        "outputId": "dd1bcc83-cb43-41ad-92f3-4e82dab874ad"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [100, 5, 4, 3, 2], 111]"
+            ]
+          },
+          "execution_count": 95,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 역순정렬\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.089130Z",
+          "start_time": "2022-03-22T17:31:35.076131Z"
+        },
+        "id": "Bm6boVHtoNGI",
+        "outputId": "ea6d1367-4d0c-4b95-f474-e81c1fe2956e"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "3"
+            ]
+          },
+          "execution_count": 96,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 위치 반환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.104131Z",
+          "start_time": "2022-03-22T17:31:35.091131Z"
+        },
+        "id": "k_mnR1fuoNGI",
+        "outputId": "05d64730-9a5b-4014-f906-862de31f7669"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "0"
+            ]
+          },
+          "execution_count": 97,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.119131Z",
+          "start_time": "2022-03-22T17:31:35.105131Z"
+        },
+        "id": "Tmib7TqQoNGI",
+        "outputId": "4112498a-c241-41c5-e212-38e292cd4e9a"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[100, 5, 4, 3, 2]"
+            ]
+          },
+          "execution_count": 98,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.134129Z",
+          "start_time": "2022-03-22T17:31:35.120131Z"
+        },
+        "id": "C2BiDBQ4oNGJ",
+        "outputId": "c2496985-4bed-44ac-94ad-99d28ab18d0c"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [100, 6, 5, 4, 3, 2], 111]"
+            ]
+          },
+          "execution_count": 99,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# a번째 위치에 b를 추가하는건 insert(a,b) 사용\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.149129Z",
+          "start_time": "2022-03-22T17:31:35.135131Z"
+        },
+        "id": "LPGhsa6VoNGJ",
+        "outputId": "9e20b2ad-ecc2-4e83-c692-433febd967d0"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [100, 6, 6, 5, 4, 3, 2], 111]"
+            ]
+          },
+          "execution_count": 100,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.164133Z",
+          "start_time": "2022-03-22T17:31:35.150131Z"
+        },
+        "id": "dTKwZZhuoNGJ",
+        "outputId": "07b53660-c64a-41c3-9104-91fc34bd8f83"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [100, 6, 6, 5, 4, 6, 3, 2], 111]"
+            ]
+          },
+          "execution_count": 101,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.179133Z",
+          "start_time": "2022-03-22T17:31:35.165131Z"
+        },
+        "id": "24iCvTNkoNGJ",
+        "outputId": "64384bbb-8cff-4c00-debf-4e8fa66be53a"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [100, 6, 5, 4, 6, 3, 2], 111]"
+            ]
+          },
+          "execution_count": 102,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 값의 삭제\n",
+        "# 여러개일 경우 맨 처음 나오는 한개만 삭제\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.194138Z",
+          "start_time": "2022-03-22T17:31:35.180131Z"
+        },
+        "id": "9fkizXiIoNGJ",
+        "outputId": "8c70060e-1fd8-4e77-9eb5-85b36eaa540f"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "2"
+            ]
+          },
+          "execution_count": 103,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 특정 값의 개수 세기\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.209131Z",
+          "start_time": "2022-03-22T17:31:35.196133Z"
+        },
+        "id": "jWtQbiTzoNGJ",
+        "outputId": "6e01d884-568f-448c-c591-64c17bd271f4"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [100, 6, 5, 4, 6, 3, 2, 1, 2, 3], 111]"
+            ]
+          },
+          "execution_count": 104,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# append는 값의 추가이며 extend는 리스트 확장\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.224131Z",
+          "start_time": "2022-03-22T17:31:35.210131Z"
+        },
+        "id": "DsMC9hBPoNGJ",
+        "outputId": "d8247b14-67ad-43fc-e12f-6eab4c27e928"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [100, 6, 5, 4, 6, 3, 2, 1, 2, 3, [1, 2, 3]], 111]"
+            ]
+          },
+          "execution_count": 105,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.239130Z",
+          "start_time": "2022-03-22T17:31:35.225130Z"
+        },
+        "id": "Z-3rcUuuoNGJ",
+        "outputId": "7fd1512e-871c-4c02-e4cc-fd8cf763e625"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[[10], [], [100, 6, 5, 4, 6, 3, 2, 1, 2, 3, [1, 2, 3], 1], 111]"
+            ]
+          },
+          "execution_count": 106,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.254129Z",
+          "start_time": "2022-03-22T17:31:35.240132Z"
+        },
+        "id": "RER_r8S7oNGJ"
+      },
+      "outputs": [],
+      "source": [
+        "# Final[2].append(1,2)"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "L3RMDjGuoNGJ"
+      },
+      "source": [
+        "## **튜플(Tuples):** 리스트와 유사하나 순서와 값의 변경 불가\n",
+        "\n",
+        "- 리스트는 값의 생성/삭제/수정이 가능하지만 저장된 값이 쉽게 바뀔수 있는 단점\n",
+        "- 리스트는 **`[ ]`**, 튜플은 **`( )`** 기호를 사용하여 형태를 구분\n",
+        "- 튜플은 값의 생성/삭제/수정이 불가하지만 그외 기능은 리스트와 동일\n",
+        "- 인덱스/인덱싱/슬라이싱/연산 등은 모두 가능\n",
+        "\n",
+        "```python\n",
+        "()    # 빈 튜플\n",
+        "('a',)    # 값이 1개인 튜플이며 콤마는 필수!\n",
+        "('a', 'b', 'c')    # 값이 3개인 튜플\n",
+        "'a', 'b', 'c'    # 위와 동일하게 인식\n",
+        "```"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.269129Z",
+          "start_time": "2022-03-22T17:31:35.255130Z"
+        },
+        "id": "L6U_smnooNGJ",
+        "outputId": "3dc541b8-4413-445a-a2a5-57207c7f6160"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "list"
+            ]
+          },
+          "execution_count": 108,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "KK = [1,2]\n",
+        "type(KK)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.284130Z",
+          "start_time": "2022-03-22T17:31:35.270131Z"
+        },
+        "id": "im5Q_TZvoNGJ",
+        "outputId": "0aa5e565-7e72-499e-88e6-9b6d208b4b79"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "tuple"
+            ]
+          },
+          "execution_count": 109,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.299129Z",
+          "start_time": "2022-03-22T17:31:35.285131Z"
+        },
+        "id": "CLVxWvMKoNGJ",
+        "outputId": "3705caa3-7987-447a-da96-e5a0f967f540"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "tuple"
+            ]
+          },
+          "execution_count": 110,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 문자 숫자 결합된 튜플 가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.314130Z",
+          "start_time": "2022-03-22T17:31:35.300131Z"
+        },
+        "id": "_f1FtFJNoNGJ",
+        "outputId": "1ed5bfde-3796-495d-c4ec-f8f3aba44835"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "('a', 'b', 100)"
+            ]
+          },
+          "execution_count": 111,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.330135Z",
+          "start_time": "2022-03-22T17:31:35.315132Z"
+        },
+        "id": "ig4uFUVvoNGJ",
+        "outputId": "098d3583-ccfc-4e97-ea87-140d6284ec51"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "tuple"
+            ]
+          },
+          "execution_count": 112,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 반 튜플 생성\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.345130Z",
+          "start_time": "2022-03-22T17:31:35.332132Z"
+        },
+        "id": "Q6Eo1O9yoNGJ",
+        "outputId": "43b40f4c-1380-4f45-a191-6f99a5f47ac0"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "()"
+            ]
+          },
+          "execution_count": 113,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "KK_test"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.360131Z",
+          "start_time": "2022-03-22T17:31:35.346132Z"
+        },
+        "id": "mXXuFs0ioNGJ"
+      },
+      "outputs": [],
+      "source": [
+        "# 리스트와 마찬가지로 값의 추출 및 연산으로 확장 가능"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.375130Z",
+          "start_time": "2022-03-22T17:31:35.361134Z"
+        },
+        "id": "daM_v4yioNGJ",
+        "outputId": "e4d3ac3f-baf8-4ba6-94e0-dbcc03529b32"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "('a', 'b')"
+            ]
+          },
+          "execution_count": 115,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.390131Z",
+          "start_time": "2022-03-22T17:31:35.376131Z"
+        },
+        "id": "C65OMyQ2oNGJ",
+        "outputId": "4a30a5b5-3cba-4522-a4a6-59c2a44b13b8"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "('b', 100)"
+            ]
+          },
+          "execution_count": 116,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.405129Z",
+          "start_time": "2022-03-22T17:31:35.391132Z"
+        },
+        "id": "nMfMn_gToNGJ",
+        "outputId": "c0e9ce45-3df9-4271-cb85-49c6e35d4447"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "('b', 100, 'b', 100, 'b', 100)"
+            ]
+          },
+          "execution_count": 117,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "AyTapRkxoNGJ"
+      },
+      "source": [
+        "## **집합(Sets):** 중복없는 값을 선택하거나 값을 비교할 때 사용"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.420130Z",
+          "start_time": "2022-03-22T17:31:35.406131Z"
+        },
+        "id": "bx9H7a8toNGJ",
+        "outputId": "0edd9cf0-db42-428a-ea86-e8d554795e38"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "{1, 2, 3, 4, 5}"
+            ]
+          },
+          "execution_count": 118,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 중복되지 않은 값들을 추출\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 132,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.435161Z",
+          "start_time": "2022-03-22T17:31:35.421133Z"
+        },
+        "id": "dzJJMKY7oNGK"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 132,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.450161Z",
+          "start_time": "2022-03-22T17:31:35.436180Z"
+        },
+        "id": "m-doGiuKoNGK"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.465164Z",
+          "start_time": "2022-03-22T17:31:35.451161Z"
+        },
+        "id": "xXFoxA2FoNGK",
+        "outputId": "f62ab2af-ffbb-484c-86aa-c501aca65701"
+      },
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "{1, 2, 3, 4, 5} {4, 5, 6, 7}\n"
+          ]
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.480131Z",
+          "start_time": "2022-03-22T17:31:35.466133Z"
+        },
+        "id": "r7H28ZTmoNGK",
+        "outputId": "8b853c43-578a-42cb-c40d-4b36b86a0acb"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "{4, 5}"
+            ]
+          },
+          "execution_count": 122,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 교집합, 합집합, 차집합 계산 가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.495133Z",
+          "start_time": "2022-03-22T17:31:35.481131Z"
+        },
+        "id": "RHHpCeTMoNGK",
+        "outputId": "559b7f1d-57b9-4092-8481-fa830e28e1cb"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "{4, 5}"
+            ]
+          },
+          "execution_count": 123,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.510130Z",
+          "start_time": "2022-03-22T17:31:35.497131Z"
+        },
+        "id": "4nGV6T4XoNGK",
+        "outputId": "254e43e8-3717-40f2-8a5e-98f3853a6fb4"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "{1, 2, 3, 4, 5, 6, 7}"
+            ]
+          },
+          "execution_count": 124,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.525155Z",
+          "start_time": "2022-03-22T17:31:35.511131Z"
+        },
+        "id": "wqujnuCVoNGK",
+        "outputId": "d608fc62-e3b6-4d89-9dca-f7fb2ca6a197"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "{1, 2, 3, 4, 5, 6, 7}"
+            ]
+          },
+          "execution_count": 125,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.540130Z",
+          "start_time": "2022-03-22T17:31:35.527131Z"
+        },
+        "id": "J1Oh7ebfoNGK",
+        "outputId": "59071f9a-d4cc-4ac2-fd75-bbf69fca8b22"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "{1, 2, 3}"
+            ]
+          },
+          "execution_count": 126,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.555135Z",
+          "start_time": "2022-03-22T17:31:35.541132Z"
+        },
+        "id": "CcKKDeiKoNGK",
+        "outputId": "25ed1c63-b6d5-4cb1-f0f6-ce6604cfdd7d"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "{6, 7}"
+            ]
+          },
+          "execution_count": 127,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.570128Z",
+          "start_time": "2022-03-22T17:31:35.556130Z"
+        },
+        "id": "6358m7u_oNGK",
+        "outputId": "cc5f630c-560d-4997-aa96-0e1dd07ad502"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "{1, 2, 3}"
+            ]
+          },
+          "execution_count": 128,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.585129Z",
+          "start_time": "2022-03-22T17:31:35.571130Z"
+        },
+        "id": "85MFpN96oNGK",
+        "outputId": "b6e05bbb-c105-4c19-f5e5-1da79e735c21"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "{6, 7}"
+            ]
+          },
+          "execution_count": 129,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.600136Z",
+          "start_time": "2022-03-22T17:31:35.586130Z"
+        },
+        "id": "09zua65HoNGK",
+        "outputId": "2203731f-0a72-4231-8cc8-f16a987ac182"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "{1, 2, 3, 4, 5}"
+            ]
+          },
+          "execution_count": 130,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "left"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.615131Z",
+          "start_time": "2022-03-22T17:31:35.602133Z"
+        },
+        "id": "g0kiK4E7oNGK",
+        "outputId": "dc718b7b-72f2-4218-99a4-f013610f3936"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "{1, 2, 3, 4, 5, 6}"
+            ]
+          },
+          "execution_count": 131,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# add 함수로 신규 값 추가 가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.630130Z",
+          "start_time": "2022-03-22T17:31:35.616131Z"
+        },
+        "id": "vl4Gr3CBoNGK",
+        "outputId": "e146a006-67f0-46cb-b61f-174124574993"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "{1, 2, 3, 4, 5, 6}"
+            ]
+          },
+          "execution_count": 132,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.645129Z",
+          "start_time": "2022-03-22T17:31:35.631130Z"
+        },
+        "id": "nwy9DmAeoNGK",
+        "outputId": "3365fe0d-85ca-4fe6-f72d-3113f2761595"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "{2, 3, 4, 5, 6}"
+            ]
+          },
+          "execution_count": 133,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# remove 함수로 기존 값 삭제 가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.660129Z",
+          "start_time": "2022-03-22T17:31:35.646132Z"
+        },
+        "id": "BpuENV4eoNGK",
+        "outputId": "f60d73c4-33ba-41d9-a415-7ed6c00bd1c5"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "{1, 2, 3, 4, 5, 6, 7}"
+            ]
+          },
+          "execution_count": 134,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# update 함수로 신규 값 추가 가능\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.675130Z",
+          "start_time": "2022-03-22T17:31:35.661135Z"
+        },
+        "id": "j6HFHoUHoNGK"
+      },
+      "outputs": [],
+      "source": [
+        "# 값의 순서가 없는 자료형태이기 때문에 인덱싱으로 값에 접근하려면 리스트나 튜플로 변환해야 함\n",
+        "# left[0]"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.690130Z",
+          "start_time": "2022-03-22T17:31:35.676132Z"
+        },
+        "id": "0Pt8CFAOoNGK",
+        "outputId": "ddbe2498-bf5e-42d1-d359-a651445050ec"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "[4, 5, 6, 1, 7]"
+            ]
+          },
+          "execution_count": 136,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.705130Z",
+          "start_time": "2022-03-22T17:31:35.691130Z"
+        },
+        "id": "qoTGpF7LoNGK",
+        "outputId": "a2541dd4-e5ad-4c05-9d1a-5b336c082a54"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "(4, 5, 6, 1, 7)"
+            ]
+          },
+          "execution_count": 137,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "EV1PHQFYoNGK"
+      },
+      "source": [
+        "## **딕셔너리(Dictionaries):** 짝으로 이루어진 값을 표현할 때 사용\n",
+        "\n",
+        "- 중괄호기호 **`{ }`** 로 값을 묶어서 형태를 구분\n",
+        "- 값은 따옴표 **`Key:Value`** 를 기준으로 키(Key)와 자료(Value)를 묶어서 생성\n",
+        "- **Key:** 왼쪽에 있는 키는 데이터의 **`열쇠`** 와 같은 기능\n",
+        "> - Key는 변할수 없도록 지정하고 있어서, 변하지 않는 자료형만 사용이 가능\n",
+        "> - 리스트는 사용 불가하지만 튜플을 사용 가능\n",
+        "- **Value:** 오른쪽에 있는 값은 **`Key`** 로 꺼낼수 있는 지정된 자료\n",
+        "> - Key 값이 같은 Value가 2개 이상 있으면 마지막 Value만 Key에 대응되어 저장"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 121,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.720129Z",
+          "start_time": "2022-03-22T17:31:35.707132Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Ueo395CRoNGK",
+        "outputId": "e83084f0-697b-40e4-d1a5-f2ce3e2d694a"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "{'Name': 'KK',\n",
+              " 'Age': 100,\n",
+              " 'Birth': '1104',\n",
+              " 'Phone': '010-0000-0000',\n",
+              " '1': 'test'}"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 121
+        }
+      ],
+      "source": [
+        "# {키1:값1, 키2:값2, 키3:값3, ...}\n",
+        "Teacher = {'Name':'KK', 'Age':100, 'Birth':'1104', 'Phone':'010-0000-0000', '1':'test'}\n",
+        "Teacher"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 122,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:35.735130Z",
+          "start_time": "2022-03-22T17:31:35.721130Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ASxFzHR9oNGK",
+        "outputId": "28d0ac84-4725-4939-f437-e7e9b4670936"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "{'Name': ['KK', 'WW'],\n",
+              " 'Age': 100,\n",
+              " 'Birth': '1104',\n",
+              " 'Phone': '010-0000-0000',\n",
+              " '1': 'test'}"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 122
+        }
+      ],
+      "source": [
+        "Teacher2 = {'Name':['KK', 'WW'], 'Age':100, 'Birth':'1104', 'Phone':'010-0000-0000', '1':'test'}\n",
+        "Teacher2"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "UY8UTKDMoNGK"
+      },
+      "source": [
+        "- 함수의 입력값이 많아질때 별도로 처리해서 한꺼번에 입력\n",
+        "- 2차원 이상의 데이터를 표현"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 123,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.440166Z",
+          "start_time": "2022-03-22T17:31:35.736132Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 206
+        },
+        "id": "PejVowTkoNGL",
+        "outputId": "5eb234d5-f7a3-4a4c-a10c-7a55daf7771e"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "             Example\n",
+              "Name              KK\n",
+              "Age              100\n",
+              "Birth           1104\n",
+              "Phone  010-0000-0000\n",
+              "1               test"
+            ],
+            "text/html": [
+              "\n",
+              "  <div id=\"df-c08015ff-ff1a-4162-a333-9ba187662842\" class=\"colab-df-container\">\n",
+              "    <div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Example</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>Name</th>\n",
+              "      <td>KK</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>Age</th>\n",
+              "      <td>100</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>Birth</th>\n",
+              "      <td>1104</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>Phone</th>\n",
+              "      <td>010-0000-0000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>test</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>\n",
+              "    <div class=\"colab-df-buttons\">\n",
+              "\n",
+              "  <div class=\"colab-df-container\">\n",
+              "    <button class=\"colab-df-convert\" onclick=\"convertToInteractive('df-c08015ff-ff1a-4162-a333-9ba187662842')\"\n",
+              "            title=\"Convert this dataframe to an interactive table.\"\n",
+              "            style=\"display:none;\">\n",
+              "\n",
+              "  <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\">\n",
+              "    <path d=\"M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z\"/>\n",
+              "  </svg>\n",
+              "    </button>\n",
+              "\n",
+              "  <style>\n",
+              "    .colab-df-container {\n",
+              "      display:flex;\n",
+              "      gap: 12px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert {\n",
+              "      background-color: #E8F0FE;\n",
+              "      border: none;\n",
+              "      border-radius: 50%;\n",
+              "      cursor: pointer;\n",
+              "      display: none;\n",
+              "      fill: #1967D2;\n",
+              "      height: 32px;\n",
+              "      padding: 0 0 0 0;\n",
+              "      width: 32px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert:hover {\n",
+              "      background-color: #E2EBFA;\n",
+              "      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "      fill: #174EA6;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-buttons div {\n",
+              "      margin-bottom: 4px;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert {\n",
+              "      background-color: #3B4455;\n",
+              "      fill: #D2E3FC;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert:hover {\n",
+              "      background-color: #434B5C;\n",
+              "      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);\n",
+              "      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));\n",
+              "      fill: #FFFFFF;\n",
+              "    }\n",
+              "  </style>\n",
+              "\n",
+              "    <script>\n",
+              "      const buttonEl =\n",
+              "        document.querySelector('#df-c08015ff-ff1a-4162-a333-9ba187662842 button.colab-df-convert');\n",
+              "      buttonEl.style.display =\n",
+              "        google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "\n",
+              "      async function convertToInteractive(key) {\n",
+              "        const element = document.querySelector('#df-c08015ff-ff1a-4162-a333-9ba187662842');\n",
+              "        const dataTable =\n",
+              "          await google.colab.kernel.invokeFunction('convertToInteractive',\n",
+              "                                                    [key], {});\n",
+              "        if (!dataTable) return;\n",
+              "\n",
+              "        const docLinkHtml = 'Like what you see? Visit the ' +\n",
+              "          '<a target=\"_blank\" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'\n",
+              "          + ' to learn more about interactive tables.';\n",
+              "        element.innerHTML = '';\n",
+              "        dataTable['output_type'] = 'display_data';\n",
+              "        await google.colab.output.renderOutput(dataTable, element);\n",
+              "        const docLink = document.createElement('div');\n",
+              "        docLink.innerHTML = docLinkHtml;\n",
+              "        element.appendChild(docLink);\n",
+              "      }\n",
+              "    </script>\n",
+              "  </div>\n",
+              "\n",
+              "\n",
+              "    <div id=\"df-3b0e53e9-4c21-41ce-bd4f-92f2581fb566\">\n",
+              "      <button class=\"colab-df-quickchart\" onclick=\"quickchart('df-3b0e53e9-4c21-41ce-bd4f-92f2581fb566')\"\n",
+              "                title=\"Suggest charts\"\n",
+              "                style=\"display:none;\">\n",
+              "\n",
+              "<svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\"viewBox=\"0 0 24 24\"\n",
+              "     width=\"24px\">\n",
+              "    <g>\n",
+              "        <path d=\"M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z\"/>\n",
+              "    </g>\n",
+              "</svg>\n",
+              "      </button>\n",
+              "\n",
+              "<style>\n",
+              "  .colab-df-quickchart {\n",
+              "      --bg-color: #E8F0FE;\n",
+              "      --fill-color: #1967D2;\n",
+              "      --hover-bg-color: #E2EBFA;\n",
+              "      --hover-fill-color: #174EA6;\n",
+              "      --disabled-fill-color: #AAA;\n",
+              "      --disabled-bg-color: #DDD;\n",
+              "  }\n",
+              "\n",
+              "  [theme=dark] .colab-df-quickchart {\n",
+              "      --bg-color: #3B4455;\n",
+              "      --fill-color: #D2E3FC;\n",
+              "      --hover-bg-color: #434B5C;\n",
+              "      --hover-fill-color: #FFFFFF;\n",
+              "      --disabled-bg-color: #3B4455;\n",
+              "      --disabled-fill-color: #666;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart {\n",
+              "    background-color: var(--bg-color);\n",
+              "    border: none;\n",
+              "    border-radius: 50%;\n",
+              "    cursor: pointer;\n",
+              "    display: none;\n",
+              "    fill: var(--fill-color);\n",
+              "    height: 32px;\n",
+              "    padding: 0;\n",
+              "    width: 32px;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart:hover {\n",
+              "    background-color: var(--hover-bg-color);\n",
+              "    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "    fill: var(--button-hover-fill-color);\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-quickchart-complete:disabled,\n",
+              "  .colab-df-quickchart-complete:disabled:hover {\n",
+              "    background-color: var(--disabled-bg-color);\n",
+              "    fill: var(--disabled-fill-color);\n",
+              "    box-shadow: none;\n",
+              "  }\n",
+              "\n",
+              "  .colab-df-spinner {\n",
+              "    border: 2px solid var(--fill-color);\n",
+              "    border-color: transparent;\n",
+              "    border-bottom-color: var(--fill-color);\n",
+              "    animation:\n",
+              "      spin 1s steps(1) infinite;\n",
+              "  }\n",
+              "\n",
+              "  @keyframes spin {\n",
+              "    0% {\n",
+              "      border-color: transparent;\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "      border-left-color: var(--fill-color);\n",
+              "    }\n",
+              "    20% {\n",
+              "      border-color: transparent;\n",
+              "      border-left-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "    }\n",
+              "    30% {\n",
+              "      border-color: transparent;\n",
+              "      border-left-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "      border-right-color: var(--fill-color);\n",
+              "    }\n",
+              "    40% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "      border-top-color: var(--fill-color);\n",
+              "    }\n",
+              "    60% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "    }\n",
+              "    80% {\n",
+              "      border-color: transparent;\n",
+              "      border-right-color: var(--fill-color);\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "    }\n",
+              "    90% {\n",
+              "      border-color: transparent;\n",
+              "      border-bottom-color: var(--fill-color);\n",
+              "    }\n",
+              "  }\n",
+              "</style>\n",
+              "\n",
+              "      <script>\n",
+              "        async function quickchart(key) {\n",
+              "          const quickchartButtonEl =\n",
+              "            document.querySelector('#' + key + ' button');\n",
+              "          quickchartButtonEl.disabled = true;  // To prevent multiple clicks.\n",
+              "          quickchartButtonEl.classList.add('colab-df-spinner');\n",
+              "          try {\n",
+              "            const charts = await google.colab.kernel.invokeFunction(\n",
+              "                'suggestCharts', [key], {});\n",
+              "          } catch (error) {\n",
+              "            console.error('Error during call to suggestCharts:', error);\n",
+              "          }\n",
+              "          quickchartButtonEl.classList.remove('colab-df-spinner');\n",
+              "          quickchartButtonEl.classList.add('colab-df-quickchart-complete');\n",
+              "        }\n",
+              "        (() => {\n",
+              "          let quickchartButtonEl =\n",
+              "            document.querySelector('#df-3b0e53e9-4c21-41ce-bd4f-92f2581fb566 button');\n",
+              "          quickchartButtonEl.style.display =\n",
+              "            google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "        })();\n",
+              "      </script>\n",
+              "    </div>\n",
+              "\n",
+              "    </div>\n",
+              "  </div>\n"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "dataframe",
+              "summary": "{\n  \"name\": \"pd\",\n  \"rows\": 5,\n  \"fields\": [\n    {\n      \"column\": \"Example\",\n      \"properties\": {\n        \"dtype\": \"string\",\n        \"num_unique_values\": 5,\n        \"samples\": [\n          100,\n          \"test\",\n          \"1104\"\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    }\n  ]\n}"
+            }
+          },
+          "metadata": {},
+          "execution_count": 123
+        }
+      ],
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "pd.DataFrame.from_dict(Teacher, orient='index', columns=['Example'])"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 126,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.455132Z",
+          "start_time": "2022-03-22T17:31:36.441134Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 81
+        },
+        "id": "DK0uZ1xDoNGL",
+        "outputId": "e019947c-56fd-49e7-d938-041862b95936"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "        Name  Age Birth          Phone     1\n",
+              "Example   KK  100  1104  010-0000-0000  test"
+            ],
+            "text/html": [
+              "\n",
+              "  <div id=\"df-48370ad2-2109-4372-a1e3-a8ce698f531b\" class=\"colab-df-container\">\n",
+              "    <div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>Name</th>\n",
+              "      <th>Age</th>\n",
+              "      <th>Birth</th>\n",
+              "      <th>Phone</th>\n",
+              "      <th>1</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>Example</th>\n",
+              "      <td>KK</td>\n",
+              "      <td>100</td>\n",
+              "      <td>1104</td>\n",
+              "      <td>010-0000-0000</td>\n",
+              "      <td>test</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>\n",
+              "    <div class=\"colab-df-buttons\">\n",
+              "\n",
+              "  <div class=\"colab-df-container\">\n",
+              "    <button class=\"colab-df-convert\" onclick=\"convertToInteractive('df-48370ad2-2109-4372-a1e3-a8ce698f531b')\"\n",
+              "            title=\"Convert this dataframe to an interactive table.\"\n",
+              "            style=\"display:none;\">\n",
+              "\n",
+              "  <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\" viewBox=\"0 -960 960 960\">\n",
+              "    <path d=\"M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z\"/>\n",
+              "  </svg>\n",
+              "    </button>\n",
+              "\n",
+              "  <style>\n",
+              "    .colab-df-container {\n",
+              "      display:flex;\n",
+              "      gap: 12px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert {\n",
+              "      background-color: #E8F0FE;\n",
+              "      border: none;\n",
+              "      border-radius: 50%;\n",
+              "      cursor: pointer;\n",
+              "      display: none;\n",
+              "      fill: #1967D2;\n",
+              "      height: 32px;\n",
+              "      padding: 0 0 0 0;\n",
+              "      width: 32px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert:hover {\n",
+              "      background-color: #E2EBFA;\n",
+              "      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "      fill: #174EA6;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-buttons div {\n",
+              "      margin-bottom: 4px;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert {\n",
+              "      background-color: #3B4455;\n",
+              "      fill: #D2E3FC;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert:hover {\n",
+              "      background-color: #434B5C;\n",
+              "      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);\n",
+              "      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));\n",
+              "      fill: #FFFFFF;\n",
+              "    }\n",
+              "  </style>\n",
+              "\n",
+              "    <script>\n",
+              "      const buttonEl =\n",
+              "        document.querySelector('#df-48370ad2-2109-4372-a1e3-a8ce698f531b button.colab-df-convert');\n",
+              "      buttonEl.style.display =\n",
+              "        google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "\n",
+              "      async function convertToInteractive(key) {\n",
+              "        const element = document.querySelector('#df-48370ad2-2109-4372-a1e3-a8ce698f531b');\n",
+              "        const dataTable =\n",
+              "          await google.colab.kernel.invokeFunction('convertToInteractive',\n",
+              "                                                    [key], {});\n",
+              "        if (!dataTable) return;\n",
+              "\n",
+              "        const docLinkHtml = 'Like what you see? Visit the ' +\n",
+              "          '<a target=\"_blank\" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'\n",
+              "          + ' to learn more about interactive tables.';\n",
+              "        element.innerHTML = '';\n",
+              "        dataTable['output_type'] = 'display_data';\n",
+              "        await google.colab.output.renderOutput(dataTable, element);\n",
+              "        const docLink = document.createElement('div');\n",
+              "        docLink.innerHTML = docLinkHtml;\n",
+              "        element.appendChild(docLink);\n",
+              "      }\n",
+              "    </script>\n",
+              "  </div>\n",
+              "\n",
+              "\n",
+              "    </div>\n",
+              "  </div>\n"
+            ],
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "dataframe",
+              "summary": "{\n  \"name\": \"pd\",\n  \"rows\": 1,\n  \"fields\": [\n    {\n      \"column\": \"Name\",\n      \"properties\": {\n        \"dtype\": \"string\",\n        \"num_unique_values\": 1,\n        \"samples\": [\n          \"KK\"\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"Age\",\n      \"properties\": {\n        \"dtype\": \"date\",\n        \"min\": 100,\n        \"max\": 100,\n        \"num_unique_values\": 1,\n        \"samples\": [\n          100\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"Birth\",\n      \"properties\": {\n        \"dtype\": \"string\",\n        \"num_unique_values\": 1,\n        \"samples\": [\n          \"1104\"\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"Phone\",\n      \"properties\": {\n        \"dtype\": \"string\",\n        \"num_unique_values\": 1,\n        \"samples\": [\n          \"010-0000-0000\"\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    },\n    {\n      \"column\": \"1\",\n      \"properties\": {\n        \"dtype\": \"string\",\n        \"num_unique_values\": 1,\n        \"samples\": [\n          \"test\"\n        ],\n        \"semantic_type\": \"\",\n        \"description\": \"\"\n      }\n    }\n  ]\n}"
+            }
+          },
+          "metadata": {},
+          "execution_count": 126
+        }
+      ],
+      "source": [
+        "pd.DataFrame.from_dict(Teacher, orient='index', columns=['Example']).T"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 127,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.470161Z",
+          "start_time": "2022-03-22T17:31:36.456132Z"
+        },
+        "id": "Ah6o90qIoNGL"
+      },
+      "outputs": [],
+      "source": [
+        "# 동일한 key가 2개 존재할 경우 이전 입력값은 무시됨\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.485161Z",
+          "start_time": "2022-03-22T17:31:36.471172Z"
+        },
+        "id": "w3z4uI59oNGL"
+      },
+      "outputs": [],
+      "source": [
+        "# Teacher = {'Name':'KK', 'Age':100, 'Birth':'1104', 'Phone':'010-0000-0000', 1:'test', [1]:'test2'}\n",
+        "# Teacher"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 128,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.500162Z",
+          "start_time": "2022-03-22T17:31:36.486132Z"
+        },
+        "id": "szuhc0eNoNGL"
+      },
+      "outputs": [],
+      "source": [
+        "# key 값을 추가하면 쉽게 데이터 반영\n",
+        "# dict[키] = 값\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 132,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.515161Z",
+          "start_time": "2022-03-22T17:31:36.501165Z"
+        },
+        "id": "8hlg6F_9oNGL"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 132,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.530161Z",
+          "start_time": "2022-03-22T17:31:36.516132Z"
+        },
+        "id": "_rssS-QqoNGL"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 132,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.545132Z",
+          "start_time": "2022-03-22T17:31:36.531131Z"
+        },
+        "id": "H_7oeJG4oNGL"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 132,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.560131Z",
+          "start_time": "2022-03-22T17:31:36.546132Z"
+        },
+        "id": "t6ObhupEoNGL"
+      },
+      "outputs": [],
+      "source": [
+        "# key, value 값만 추출하기\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 131,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.575131Z",
+          "start_time": "2022-03-22T17:31:36.562135Z"
+        },
+        "id": "pCo6lvcxoNGL"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 132,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.590162Z",
+          "start_time": "2022-03-22T17:31:36.576131Z"
+        },
+        "id": "r4KnHa2IoNGL"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 132,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.605161Z",
+          "start_time": "2022-03-22T17:31:36.591132Z"
+        },
+        "id": "hSn4pqBboNGL"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.620165Z",
+          "start_time": "2022-03-22T17:31:36.606132Z"
+        },
+        "id": "Qm_KyQDvoNGL",
+        "outputId": "43f6e81d-a1e0-4fee-f772-0386c8ab26f6"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "['Name', 'Age', 'Birth', 'Phone', 1, 'Hobby']"
+            ]
+          },
+          "execution_count": 152,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.635156Z",
+          "start_time": "2022-03-22T17:31:36.621132Z"
+        },
+        "id": "EFiQhRSloNGL",
+        "outputId": "48daf96f-2c56-4a6d-c335-c524e6198e2e"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "True"
+            ]
+          },
+          "execution_count": 153,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 영어어순의 in 전치사로 key 존재(포함)여부 확인\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 120,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.650131Z",
+          "start_time": "2022-03-22T17:31:36.636131Z"
+        },
+        "id": "a6cCmo1doNGL"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 119,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.665132Z",
+          "start_time": "2022-03-22T17:31:36.651133Z"
+        },
+        "id": "Sn3o4z3DoNGL"
+      },
+      "outputs": [],
+      "source": [
+        "# 딕셔너리 자료 삭제\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 120,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.680161Z",
+          "start_time": "2022-03-22T17:31:36.666164Z"
+        },
+        "id": "GfXO-XHUoNGL"
+      },
+      "outputs": [],
+      "source": [
+        "# 딕셔너리 삭제\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "-pi_eSskoNGL"
+      },
+      "source": [
+        "# **파이썬에서 데이터의 형태 변환**\n",
+        "\n",
+        "**1. 파이썬 정수 변환:** int()     \n",
+        "**2. 파이썬 실수 변환:** float()     \n",
+        "**3. 파이썬 불리언 변환:** bool()     \n",
+        "**4. 파이썬 문자열 변환:** str()     \n",
+        "**5. 파이썬 리스트/튜플/집합/딕셔너리 변환:** list()/tuple()/set()/dict()     "
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "qHZIh79XoNGL"
+      },
+      "source": [
+        "## 정수로 변환(Int)\n",
+        "\n",
+        "> 입력값을 정수형으로 변환\n",
+        "> - int(숫자)\n",
+        "> - int(불리언)\n",
+        "> - int(계산식)\n",
+        "> - int('문자열')"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 117,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.695170Z",
+          "start_time": "2022-03-22T17:31:36.681131Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "7sSBr7M7oNGL",
+        "outputId": "395a260c-e553-444b-fdab-0121b708f4d5"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "10"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 117
+        }
+      ],
+      "source": [
+        "int(10)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 116,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.710154Z",
+          "start_time": "2022-03-22T17:31:36.697133Z"
+        },
+        "id": "IW_ldOmuoNGM"
+      },
+      "outputs": [],
+      "source": [
+        "# 3.141592 정수로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 115,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.725166Z",
+          "start_time": "2022-03-22T17:31:36.711134Z"
+        },
+        "id": "FbsmkYtCoNGM"
+      },
+      "outputs": [],
+      "source": [
+        "# True 정수로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.740130Z",
+          "start_time": "2022-03-22T17:31:36.726136Z"
+        },
+        "id": "Kgcq7P_DoNGM",
+        "outputId": "d4b51c6e-dd22-4222-ee0a-6280e3a3d08f"
+      },
+      "outputs": [
+        {
+          "data": {
+            "text/plain": [
+              "2"
+            ]
+          },
+          "execution_count": 160,
+          "metadata": {},
+          "output_type": "execute_result"
+        }
+      ],
+      "source": [
+        "# 5를 2로 나누고 정수로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 114,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.755132Z",
+          "start_time": "2022-03-22T17:31:36.741131Z"
+        },
+        "id": "99LS89qVoNGM"
+      },
+      "outputs": [],
+      "source": [
+        "# 숫자형태의 문자 10을 정수로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 113,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.770161Z",
+          "start_time": "2022-03-22T17:31:36.756130Z"
+        },
+        "id": "_KD35TwvoNGM"
+      },
+      "outputs": [],
+      "source": [
+        "# 문자는 기본적으로 정수 변환 불가\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "ie8dd4XEoNGM"
+      },
+      "source": [
+        "## 실수로 변환(Float)\n",
+        "\n",
+        "> 입력값을 실수형으로 변환\n",
+        "> - float(숫자)\n",
+        "> - float(불리언)\n",
+        "> - float(계산식)\n",
+        "> - float('문자열')"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 112,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.785161Z",
+          "start_time": "2022-03-22T17:31:36.771132Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "iYVde0DaoNGM",
+        "outputId": "c155a4b3-49b6-4cfa-f9da-d75b81180ce3"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "5.0"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 112
+        }
+      ],
+      "source": [
+        "float(5)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 111,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.800154Z",
+          "start_time": "2022-03-22T17:31:36.786163Z"
+        },
+        "id": "iK0xPikjoNGM"
+      },
+      "outputs": [],
+      "source": [
+        "# 3.141592 실수로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 110,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.815163Z",
+          "start_time": "2022-03-22T17:31:36.801133Z"
+        },
+        "id": "2O91iNQxoNGM"
+      },
+      "outputs": [],
+      "source": [
+        "# False 실수로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 109,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.830172Z",
+          "start_time": "2022-03-22T17:31:36.816163Z"
+        },
+        "id": "IJFJsNP6oNGM"
+      },
+      "outputs": [],
+      "source": [
+        "# True 실수로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 108,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.845129Z",
+          "start_time": "2022-03-22T17:31:36.831136Z"
+        },
+        "id": "51MuuyDwoNGM"
+      },
+      "outputs": [],
+      "source": [
+        "# 1 + 2 연산 후 실수로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 107,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.860166Z",
+          "start_time": "2022-03-22T17:31:36.846165Z"
+        },
+        "id": "Wb7CyqxBoNGM"
+      },
+      "outputs": [],
+      "source": [
+        "# 숫자형태의 문자를 실수로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 106,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.875132Z",
+          "start_time": "2022-03-22T17:31:36.862134Z"
+        },
+        "id": "ywpB7mt2oNGM"
+      },
+      "outputs": [],
+      "source": [
+        "# True 불리언을 복소수로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "GYh7qd1woNGM"
+      },
+      "source": [
+        "## 불리언으로 변환(Bool)\n",
+        "\n",
+        "> 입력값을 불리언형으로 변환(숫자의 경우 **`0인지`** 여부, 문자의 경우 **`비어있는지`** 여부)\n",
+        "> - bool(숫자)\n",
+        "> - bool(불리언)\n",
+        "> - bool(계산식)\n",
+        "> - bool('문자열')"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 105,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.890131Z",
+          "start_time": "2022-03-22T17:31:36.876131Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "lYdrKxHIoNGM",
+        "outputId": "b98a8830-151a-4d18-9fdf-c231df797eb9"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "True"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 105
+        }
+      ],
+      "source": [
+        "bool(54)"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 103,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.905130Z",
+          "start_time": "2022-03-22T17:31:36.892131Z"
+        },
+        "id": "yWIkdKvHoNGM"
+      },
+      "outputs": [],
+      "source": [
+        "# 0을 불리언으로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 104,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.920130Z",
+          "start_time": "2022-03-22T17:31:36.907131Z"
+        },
+        "id": "ZJ1-Bcy1oNGM"
+      },
+      "outputs": [],
+      "source": [
+        "# 3.141592 불리언으로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 102,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.935129Z",
+          "start_time": "2022-03-22T17:31:36.921132Z"
+        },
+        "id": "jy9crgIJoNGM"
+      },
+      "outputs": [],
+      "source": [
+        "# 0.00 불리언으로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 101,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.950131Z",
+          "start_time": "2022-03-22T17:31:36.936131Z"
+        },
+        "id": "qjGSMsGKoNGM"
+      },
+      "outputs": [],
+      "source": [
+        "# 1-1 연산결과 불리언으로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 100,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.965132Z",
+          "start_time": "2022-03-22T17:31:36.952132Z"
+        },
+        "id": "YrjBujfyoNGM"
+      },
+      "outputs": [],
+      "source": [
+        "# 1-2 연산결과 불리언으로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 99,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.980130Z",
+          "start_time": "2022-03-22T17:31:36.966131Z"
+        },
+        "id": "0wMDawMXoNGN"
+      },
+      "outputs": [],
+      "source": [
+        "# 2-1 연산결과 불리언으로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 98,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:36.995131Z",
+          "start_time": "2022-03-22T17:31:36.981133Z"
+        },
+        "id": "cDD5DrBAoNGN"
+      },
+      "outputs": [],
+      "source": [
+        "# True 불리언으로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 97,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.010130Z",
+          "start_time": "2022-03-22T17:31:36.998133Z"
+        },
+        "id": "nf38dEcSoNGN"
+      },
+      "outputs": [],
+      "source": [
+        "# KK 문자 불리언으로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 96,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.025131Z",
+          "start_time": "2022-03-22T17:31:37.011131Z"
+        },
+        "id": "3DtNpUxxoNGN"
+      },
+      "outputs": [],
+      "source": [
+        "# 빈문자 불리언으로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 95,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.040131Z",
+          "start_time": "2022-03-22T17:31:37.026132Z"
+        },
+        "id": "RVjJp2b2oNGN"
+      },
+      "outputs": [],
+      "source": [
+        "# 공백문자 불리언으로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "ZgCeMwhCoNGN"
+      },
+      "source": [
+        "## 문자열로 변환(Str)\n",
+        "\n",
+        "> 입력값을 문자열형으로 변환    \n",
+        ">\n",
+        "> 출력값은 문자열형을 의미하는 따옴표가 반드시 동반    \n",
+        ">\n",
+        "> - str(숫자)\n",
+        "> - str(불리언)\n",
+        "> - str(계산식)\n",
+        "> - str('문자열')"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 94,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.055132Z",
+          "start_time": "2022-03-22T17:31:37.041131Z"
+        },
+        "id": "TduPeOmtoNGN"
+      },
+      "outputs": [],
+      "source": [
+        "# 숫자를 문자열로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 93,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.070132Z",
+          "start_time": "2022-03-22T17:31:37.056131Z"
+        },
+        "id": "MWQFqVzJoNGN"
+      },
+      "outputs": [],
+      "source": [
+        "# 3.141592 문자열로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 92,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.085131Z",
+          "start_time": "2022-03-22T17:31:37.071131Z"
+        },
+        "id": "aLv7cbTRoNGN"
+      },
+      "outputs": [],
+      "source": [
+        "# True를 문자열로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 91,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.100130Z",
+          "start_time": "2022-03-22T17:31:37.086131Z"
+        },
+        "id": "RdRj-tfVoNGP"
+      },
+      "outputs": [],
+      "source": [
+        "# False를 문자열로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 90,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.115130Z",
+          "start_time": "2022-03-22T17:31:37.101132Z"
+        },
+        "id": "RLk2K318oNGP"
+      },
+      "outputs": [],
+      "source": [
+        "# 숫자형태 문자 2를 문자열로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 89,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.130133Z",
+          "start_time": "2022-03-22T17:31:37.116130Z"
+        },
+        "id": "e8sHTsdzoNGP"
+      },
+      "outputs": [],
+      "source": [
+        "# 문자 KK 문자열로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "HXarP2rMoNGP"
+      },
+      "source": [
+        "## 리스트/튜플/집합/딕셔너리 변환"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 88,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.146130Z",
+          "start_time": "2022-03-22T17:31:37.131135Z"
+        },
+        "id": "gKGVlsfGoNGP"
+      },
+      "outputs": [],
+      "source": [
+        "# (1,2) 튜플을 리스트로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 87,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.161130Z",
+          "start_time": "2022-03-22T17:31:37.147131Z"
+        },
+        "id": "O0tU6PZioNGP"
+      },
+      "outputs": [],
+      "source": [
+        "# [1,2] 리스트를 튜플로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 86,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.176130Z",
+          "start_time": "2022-03-22T17:31:37.162133Z"
+        },
+        "id": "eU9vhvuWoNGP"
+      },
+      "outputs": [],
+      "source": [
+        "# [1,2,2] 리스트를 집합으로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 85,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.191135Z",
+          "start_time": "2022-03-22T17:31:37.177131Z"
+        },
+        "id": "711Xn6qGoNGP"
+      },
+      "outputs": [],
+      "source": [
+        "# [[1,2],[3,4]] 리스트를 딕셔너리로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 84,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.206130Z",
+          "start_time": "2022-03-22T17:31:37.192132Z"
+        },
+        "id": "BLd9X9x9oNGP"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 84,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.221130Z",
+          "start_time": "2022-03-22T17:31:37.208132Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "FOI2_6u6oNGQ",
+        "outputId": "c05034d8-4f97-440c-cdb8-26209d4857bc"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "5"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 84
+        }
+      ],
+      "source": [
+        "x"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 83,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.236130Z",
+          "start_time": "2022-03-22T17:31:37.222131Z"
+        },
+        "id": "0RJyQIxaoNGQ"
+      },
+      "outputs": [],
+      "source": [
+        "# x 딕셔너리를 리스트로 변환\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 82,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.251131Z",
+          "start_time": "2022-03-22T17:31:37.237132Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 211
+        },
+        "id": "CY2LLJmGoNGQ",
+        "outputId": "ff5525e9-3c1d-4916-f21f-406323b6f2ef"
+      },
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "TypeError",
+          "evalue": "'int' object is not iterable",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mTypeError\u001b[0m                                 Traceback (most recent call last)",
+            "\u001b[0;32m/tmp/ipython-input-2320271360.py\u001b[0m in \u001b[0;36m<cell line: 0>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0;31m# x 딕셔너리를 튜플기반 리스트로 변환\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      2\u001b[0m \u001b[0mtemp\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m[\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 3\u001b[0;31m \u001b[0;32mfor\u001b[0m \u001b[0mi\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mx\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      4\u001b[0m     \u001b[0mtemp\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mappend\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mi\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mx\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mi\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      5\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;31mTypeError\u001b[0m: 'int' object is not iterable"
+          ]
+        }
+      ],
+      "source": [
+        "# x 딕셔너리를 튜플기반 리스트로 변환\n",
+        "temp = []\n",
+        "for i in x:\n",
+        "    temp.append((i, x[i]))\n",
+        "\n",
+        "temp"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 81,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.266129Z",
+          "start_time": "2022-03-22T17:31:37.252130Z"
+        },
+        "id": "f-pEU3A9oNGQ"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 81,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.281131Z",
+          "start_time": "2022-03-22T17:31:37.267131Z"
+        },
+        "id": "phaHmaTHoNGQ"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 81,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.296134Z",
+          "start_time": "2022-03-22T17:31:37.282132Z"
+        },
+        "id": "l-0ALuk0oNGQ"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 81,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.311131Z",
+          "start_time": "2022-03-22T17:31:37.298131Z"
+        },
+        "id": "nF4nQtNVoNGQ"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "rGVKzOFPoNGQ"
+      },
+      "source": [
+        "# **파이썬이 사용하는 연산의 형태**\n",
+        "\n",
+        "- **목적:** 실제 생활에서 사람이 생각(f)하는 사칙연산과 수리적 로직을 파이썬 방식으로 이해\n",
+        "> - **산술연산자(Arithmetic Operator)**\n",
+        "> - **할당연산자(Assignment Operator)**\n",
+        "> - **비교연산자(Comparison Operator)**\n",
+        "> - **논리연산자(Logical Operator)**\n",
+        "> - **식별연산자(Identity Operator)**\n",
+        "> - **멤버연산자(Menbership Operator)**"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "Xr848-xzoNGQ"
+      },
+      "source": [
+        "## **산술연산자(Arithmetic Operator):** 수학 연산을 위해 사용\n",
+        "\n",
+        "| 산술연산자 |  기능  |\n",
+        "|:----------:|:------:|\n",
+        "|     A + B    | 더하기 |\n",
+        "|     A - B    |  빼기  |\n",
+        "|     A * B    | 곱하기 |\n",
+        "|     A / B    | 나누기 |\n",
+        "|     A % B    | 나머지 |\n",
+        "|    A ** B    |  제곱  |\n",
+        "|    A // B    |   몫   |\n",
+        "|   divmod(A,B)   | (몫, 나머지) |"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 81,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.326132Z",
+          "start_time": "2022-03-22T17:31:37.312131Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "aL-TwdgHoNGQ",
+        "outputId": "7239b018-4a97-4341-bea2-7aac265719b3"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "2"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 81
+        }
+      ],
+      "source": [
+        "1 + 1"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 80,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.341129Z",
+          "start_time": "2022-03-22T17:31:37.327131Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "-uFM_nE6oNGQ",
+        "outputId": "1b741af2-5ab6-46c0-d044-30cd360041f0"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "1"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 80
+        }
+      ],
+      "source": [
+        "3 - 2"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 79,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.356131Z",
+          "start_time": "2022-03-22T17:31:37.343131Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "aAtVKD32oNGQ",
+        "outputId": "7cf2cf5f-a5f1-444d-cfba-a8ce59d8d4a7"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "4"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 79
+        }
+      ],
+      "source": [
+        "2 * 2"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 78,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.371130Z",
+          "start_time": "2022-03-22T17:31:37.357131Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "N2a9ZmEGoNGQ",
+        "outputId": "5647eec5-a753-43a6-d81d-c43de5f34fe0"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "2.0"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 78
+        }
+      ],
+      "source": [
+        "4 / 2"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 77,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.386131Z",
+          "start_time": "2022-03-22T17:31:37.372132Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "QF4nX22ToNGQ",
+        "outputId": "fb9d1589-704d-48d9-f657-b28f73223a92"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "1"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 77
+        }
+      ],
+      "source": [
+        "5 % 2"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 76,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.401129Z",
+          "start_time": "2022-03-22T17:31:37.387131Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "4MiY7oofoNGQ",
+        "outputId": "c7dca787-89e4-49eb-cd9e-4ea94049b1ce"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "27"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 76
+        }
+      ],
+      "source": [
+        "3 ** 3    # 3 * 3 * 3"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 75,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.416130Z",
+          "start_time": "2022-03-22T17:31:37.402132Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Cq4-kRzRoNGQ",
+        "outputId": "8aa0de95-1a20-4a8a-b293-51ebb63ac173"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "3.5"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 75
+        }
+      ],
+      "source": [
+        "7 / 2"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 74,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.431131Z",
+          "start_time": "2022-03-22T17:31:37.417131Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "I7WjbA35oNGQ",
+        "outputId": "07746ad0-4310-4c4b-84be-17011b1682e6"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "3"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 74
+        }
+      ],
+      "source": [
+        "7 // 2"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 73,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.446130Z",
+          "start_time": "2022-03-22T17:31:37.433131Z"
+        },
+        "id": "uGrCvafQoNGQ"
+      },
+      "outputs": [],
+      "source": [
+        "# 몫과 나머지 함께 구하기\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 72,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.461130Z",
+          "start_time": "2022-03-22T17:31:37.447131Z"
+        },
+        "id": "4mSq1CV4oNGQ"
+      },
+      "outputs": [],
+      "source": [
+        "# quotient = divmod(5,2)[0]\n",
+        "# remainder = divmod(5,2)[1]"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 71,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.476131Z",
+          "start_time": "2022-03-22T17:31:37.463134Z"
+        },
+        "id": "E5diVwWcoNGQ"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 71,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.491131Z",
+          "start_time": "2022-03-22T17:31:37.477130Z"
+        },
+        "id": "tTFpU-O-oNGQ"
+      },
+      "outputs": [],
+      "source": [
+        "# 실수 계산부터는 오차가 발생\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 70,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.506130Z",
+          "start_time": "2022-03-22T17:31:37.492131Z"
+        },
+        "id": "ixvOiYEZoNGQ"
+      },
+      "outputs": [],
+      "source": [
+        "# 실수와 정수의 계산은 표현 범위가 넓은 실수로 계산\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "Vrxc-TWboNGR"
+      },
+      "source": [
+        "## **할당연산자(Assignment Operator):** 값을 반영하기 위해 사용\n",
+        "\n",
+        "| 할당연산자 |                        기능                        |\n",
+        "|:----------:|:--------------------------------------------------:|\n",
+        "|     A = B    |             왼쪽 값에 오른쪽 값을 할당             |\n",
+        "|    A += B    |       왼쪽 값을 오른쪽에 더한 후, 왼쪽에 할당      |\n",
+        "|    A -= B    |        왼쪽 값을 오른쪽에 뺀 후, 왼쪽에 할당       |\n",
+        "|    A *= B    |       왼쪽 값을 오른쪽에 곱한 후, 왼쪽에 할당      |\n",
+        "|    A /= B    |       왼쪽 값을 오른쪽에 나눈 후, 왼쪽에 할당      |\n",
+        "|    A %= B    | 왼쪽 값을 오른쪽에 나눈 후, 나머지값을 왼쪽에 할당 |"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 69,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.521129Z",
+          "start_time": "2022-03-22T17:31:37.509132Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "25XXe0nioNGR",
+        "outputId": "92aed95d-a43b-49ea-b751-1daafbb0abbd"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "5"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 69
+        }
+      ],
+      "source": [
+        "x = 5\n",
+        "x"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 68,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.536129Z",
+          "start_time": "2022-03-22T17:31:37.522131Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "csI5kOcaoNGR",
+        "outputId": "ed92f4dc-be29-41bc-cb60-fac8e68992a2"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "8"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 68
+        }
+      ],
+      "source": [
+        "x = 5\n",
+        "# x = x + 3\n",
+        "x += 3\n",
+        "x"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 67,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.551130Z",
+          "start_time": "2022-03-22T17:31:37.537131Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "sYnV30aVoNGR",
+        "outputId": "f6a5b712-087f-4ab0-be5f-fdf3ad5a06b2"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "2"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 67
+        }
+      ],
+      "source": [
+        "x = 5\n",
+        "# x = x - 3\n",
+        "x -= 3\n",
+        "x"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 66,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.566130Z",
+          "start_time": "2022-03-22T17:31:37.552132Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Pj2yxzxxoNGR",
+        "outputId": "c32a5131-a467-4e9b-a5be-e131545ccf01"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "15"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 66
+        }
+      ],
+      "source": [
+        "x = 5\n",
+        "# x = x * 3\n",
+        "x *= 3\n",
+        "x"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 65,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.581130Z",
+          "start_time": "2022-03-22T17:31:37.567131Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "IWbinl-NoNGR",
+        "outputId": "270ea991-039f-4e75-f98d-0a7778d8c5ef"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "1.6666666666666667"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 65
+        }
+      ],
+      "source": [
+        "x = 5\n",
+        "# x = x / 3\n",
+        "x /= 3\n",
+        "x"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 64,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.596133Z",
+          "start_time": "2022-03-22T17:31:37.582132Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "xp_rJDE8oNGR",
+        "outputId": "4348d528-7953-40b6-92d2-9bc8a4872e8a"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "2"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 64
+        }
+      ],
+      "source": [
+        "x = 5\n",
+        "# x = x % 3\n",
+        "x %= 3\n",
+        "x"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "x4PGk_7joNGR"
+      },
+      "source": [
+        "## **비교연산자(Comparison Operator):** 두 값을 비교하기 위해 사용\n",
+        "\n",
+        "| 비교연산자 |              기능             |\n",
+        "|:----------:|:-----------------------------:|\n",
+        "|    A == B    |              같음             |\n",
+        "|    A != B    |           같지 않음           |\n",
+        "|     A > B    |      왼쪽이 오른쪽보다 큼     |\n",
+        "|     A < B    |      오른쪽이 왼쪽보다 큼     |\n",
+        "|    A >= B    | 왼쪽이 오른쪽보다 크거나 같음 |\n",
+        "|    A <= B    | 오른쪽이 왼쪽보다 크거나 같음 |"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 63,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.611129Z",
+          "start_time": "2022-03-22T17:31:37.599132Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "7IZcVT2IoNGR",
+        "outputId": "b6558fdf-148e-4da4-ff9c-da43f324a653"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "False"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 63
+        }
+      ],
+      "source": [
+        "5 == 3"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 62,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.626130Z",
+          "start_time": "2022-03-22T17:31:37.612132Z"
+        },
+        "id": "boOcO9VroNGR"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 62,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.641129Z",
+          "start_time": "2022-03-22T17:31:37.627130Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "xlvH_aXPoNGR",
+        "outputId": "fcb4d58a-98c0-480b-a8e4-7a1c70c07858"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "True"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 62
+        }
+      ],
+      "source": [
+        "4 > 3"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 61,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.656131Z",
+          "start_time": "2022-03-22T17:31:37.642132Z"
+        },
+        "id": "eVlWRPIsoNGR"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 61,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.671130Z",
+          "start_time": "2022-03-22T17:31:37.657131Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "vwhT-TGXoNGR",
+        "outputId": "67bf67ac-2d66-4e32-bed3-fd62575e7ddb"
+      },
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "True"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 61
+        }
+      ],
+      "source": [
+        "6 >= 6"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 60,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.686163Z",
+          "start_time": "2022-03-22T17:31:37.672130Z"
+        },
+        "id": "NRgjIcIMoNGR"
+      },
+      "outputs": [],
+      "source": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "of7L2it0oNGR"
+      },
+      "source": [
+        "## **논리연산자(Logical Operator):** 여러 조건/상황을 반영하기 위해 사용\n",
+        "\n",
+        "| 논리연산자 |             기능             |\n",
+        "|:----------:|:----------------------------:|\n",
+        "|    A and B   |    양쪽이 모두 참이면 True   |\n",
+        "|    A or B    | 양쪽 중 하나라도 참이면 True |\n",
+        "|     not A   |     오른쪽이 False면 True    |"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 60,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.701131Z",
+          "start_time": "2022-03-22T17:31:37.687131Z"
+        },
+        "id": "OCN5IZQfoNGR"
+      },
+      "outputs": [],
+      "source": [
+        "# 2는 5보다 작고 그리고 3은 10보다 작은가?\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 59,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.716162Z",
+          "start_time": "2022-03-22T17:31:37.702130Z"
+        },
+        "id": "4PZWCXjuoNGR"
+      },
+      "outputs": [],
+      "source": [
+        "# 2는 4보다 작고 또는 7은 5보다 작은가?\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 58,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.731161Z",
+          "start_time": "2022-03-22T17:31:37.717163Z"
+        },
+        "id": "oBEEmsDjoNGR"
+      },
+      "outputs": [],
+      "source": [
+        "# \"3은 4보다 작고 그리고 5는 2보다 작다\" 가 아닌것은 무엇인가?\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "bJOVuLtgoNGR"
+      },
+      "source": [
+        "## **식별연산자(Identity Operator):** 동일여부 비교하기 위해 사용\n",
+        "\n",
+        "| 식별연산자 |        기능        |\n",
+        "|:----------:|:------------------:|\n",
+        "|    A is B    | 양쪽이 같으면 True |\n",
+        "|  A is not B  | 양쪽이 다르면 True |"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 57,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.746162Z",
+          "start_time": "2022-03-22T17:31:37.732130Z"
+        },
+        "id": "4yIMJUnCoNGS"
+      },
+      "outputs": [],
+      "source": [
+        "x = 'KK'\n",
+        "y = 'KK'\n",
+        "# x 와 y는 같은가?\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 56,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.761161Z",
+          "start_time": "2022-03-22T17:31:37.747131Z"
+        },
+        "id": "Fah8fHgPoNGS"
+      },
+      "outputs": [],
+      "source": [
+        "# x 와 y는 같은가?\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 55,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.776132Z",
+          "start_time": "2022-03-22T17:31:37.762130Z"
+        },
+        "id": "zEP4ogxAoNGS"
+      },
+      "outputs": [],
+      "source": [
+        "x = 'KK'\n",
+        "y = 'Korea'\n",
+        "# x 와 y는 같은가?\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 54,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.791162Z",
+          "start_time": "2022-03-22T17:31:37.777131Z"
+        },
+        "id": "nOfqBennoNGS"
+      },
+      "outputs": [],
+      "source": [
+        "x = 'KK'\n",
+        "y = 'Korea'\n",
+        "# x 와 y는 다른가?\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "HpQcjgP2oNGS"
+      },
+      "source": [
+        "## **멤버연산자(Menbership Operator):** 포함여부 확인하기 위해 사용\n",
+        "\n",
+        "| 멤버연산자 |                기능                |\n",
+        "|:----------:|:----------------------------------:|\n",
+        "|    A in B    |     값이 오른쪽에 포함되면 True    |\n",
+        "|  A not in B  | 값이 오른쪽에 포함되지 않으면 True |"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 53,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.806165Z",
+          "start_time": "2022-03-22T17:31:37.793132Z"
+        },
+        "id": "HrEZ4P96oNGS"
+      },
+      "outputs": [],
+      "source": [
+        "list_test = ['KK', 'Korea']\n",
+        "# 'KK' 문자열은 list_test에 포함되는가?\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 52,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.821160Z",
+          "start_time": "2022-03-22T17:31:37.807131Z"
+        },
+        "id": "HK_HEjstoNGS"
+      },
+      "outputs": [],
+      "source": [
+        "# 'KKK' 문자열은 list_test에 포함되는가?\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 51,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-22T17:31:37.836166Z",
+          "start_time": "2022-03-22T17:31:37.822167Z"
+        },
+        "scrolled": true,
+        "id": "znf-5NxgoNGS"
+      },
+      "outputs": [],
+      "source": [
+        "# 'KKK' 문자열은 list_test에 포함되지 않는가?\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 50,
+      "metadata": {
+        "ExecuteTime": {
+          "end_time": "2022-03-24T06:17:12.334419Z",
+          "start_time": "2022-03-24T06:17:12.312423Z"
+        },
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "4ZdmMN1ToNGS",
+        "outputId": "5595ba26-815a-4f6a-c6f2-d03508383194"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "x86_64\n",
+            "13(GB)\n",
+            "Linux\n",
+            "#1 SMP PREEMPT_DYNAMIC Sat Sep  6 09:54:41 UTC 2025\n",
+            "/content\n",
+            "2025-10-06 14:27:36.109088\n",
+            "2025-10-06 13:37:49\n",
+            "2025-10-06 14:27:36.109088\n",
+            "2025-10-08 16:33:17.409477\n",
+            "다음 출력을 파일명으로 설정하고 제출하시오: 난_20211011_비즈니스혁신을위한데이터사이언스응용_1반_InputOutput\n"
+          ]
+        }
+      ],
+      "source": [
+        "# 반드시 이 cell을 실행하시오\n",
+        "# 실행하지 않을 시 직접 하지 않은 것으로 간주\n",
+        "# 마지막 줄 출력으로 파일명을 설정하고 제출 필수\n",
+        "import platform, psutil, os, datetime\n",
+        "print(platform.processor())\n",
+        "print(str(round(psutil.virtual_memory().total / (1024.0 **3)))+\"(GB)\")\n",
+        "print(platform.system())\n",
+        "print(platform.version())\n",
+        "print(os.getcwd())\n",
+        "print(datetime.datetime.fromtimestamp(os.path.getctime(os.getcwd())))\n",
+        "print(datetime.datetime.fromtimestamp(os.path.getmtime(os.getcwd())))\n",
+        "print(datetime.datetime.fromtimestamp(os.path.getatime(os.getcwd())))\n",
+        "print(datetime.datetime.now())\n",
+        "title = 'InputOutput'    # 고정값\n",
+        "name = '난'    # 본인 이름을 작성\n",
+        "studentid = '20211011'    # 본인 학번을 작성\n",
+        "course = '비즈니스혁신을위한데이터사이언스응용'    # '비즈니스데이터사이언스이해', '비즈니스혁신을위한데이터사이언스응용'\n",
+        "course_number = '1반'    #  학수번호 끝자리\n",
+        "                         # 비즈니스데이터사이언스의이해 (0010885001) => 1반\n",
+        "                         # 비즈니스데이터사이언스의이해 (0010885002) => 2반\n",
+        "                         # 비즈니스혁신을위한데이터사이언스응용 (1002667001) => 1반\n",
+        "print('다음 출력을 파일명으로 설정하고 제출하시오:', name + '_' + studentid + '_' + course + '_' + course_number + '_' + title)"
+      ]
+    }
+  ],
+  "metadata": {
+    "hide_input": false,
+    "kernelspec": {
+      "display_name": "Python 3 (ipykernel)",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.12.3"
+    },
+    "toc": {
+      "base_numbering": 1,
+      "nav_menu": {},
+      "number_sections": true,
+      "sideBar": true,
+      "skip_h1_title": false,
+      "title_cell": "Table of Contents",
+      "title_sidebar": "Contents",
+      "toc_cell": false,
+      "toc_position": {
+        "height": "calc(100% - 180px)",
+        "left": "10px",
+        "top": "150px",
+        "width": "471.75px"
+      },
+      "toc_section_display": true,
+      "toc_window_display": true
+    },
+    "varInspector": {
+      "cols": {
+        "lenName": 16,
+        "lenType": 16,
+        "lenVar": 40
+      },
+      "kernels_config": {
+        "python": {
+          "delete_cmd_postfix": "",
+          "delete_cmd_prefix": "del ",
+          "library": "var_list.py",
+          "varRefreshCmd": "print(var_dic_list())"
+        },
+        "r": {
+          "delete_cmd_postfix": ") ",
+          "delete_cmd_prefix": "rm(",
+          "library": "var_list.r",
+          "varRefreshCmd": "cat(var_dic_list()) "
+        }
+      },
+      "types_to_exclude": [
+        "module",
+        "function",
+        "builtin_function_or_method",
+        "instance",
+        "_Feature"
+      ],
+      "window_display": false
+    },
+    "colab": {
+      "provenance": []
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
